@@ -50,7 +50,6 @@
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center" Margin="20,0,0,0"
                     />
-
                 <Button
                     Grid.Column="4"
                     Background="Transparent"
@@ -59,7 +58,6 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right" Click="Window_Minimize"
                     />
-
                 <Button
                     Grid.Column="5"
                     Background="Transparent"
@@ -68,9 +66,6 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center" Click="Window_Close"
                     />
-
-
-
             </Grid>
 
             <Separator

@@ -1,4 +1,5 @@
 ﻿using Account_Manager.MVVM.ViewModel;
+using Account_Manager.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,11 @@ namespace Account_Manager
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ServiceCollection serviceCollection = new ServiceCollection();
         public MainWindow()
         {
-            DataContext = new MainViewModel();
+            serviceCollection.GetNavService().Navigate(new AuthViewModel(serviceCollection));
+            DataContext = new MainViewModel(serviceCollection);
             InitializeComponent();
         }
 

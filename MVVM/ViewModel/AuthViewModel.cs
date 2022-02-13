@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Account_Manager.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,8 +16,9 @@ namespace Account_Manager.MVVM.ViewModel
 
         public string EnterPassword { get; set; }
 
-        public AuthViewModel()
+        public AuthViewModel(ServiceCollection serviceCollection)
         {
+            //
         }
     }
 }
