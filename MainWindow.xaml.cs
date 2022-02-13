@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Account_Manager.MVVM.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,23 @@ namespace Account_Manager
     {
         public MainWindow()
         {
+            DataContext = new MainViewModel();
             InitializeComponent();
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        private void Window_Close(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Window_Minimize(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
         }
     }
 }
