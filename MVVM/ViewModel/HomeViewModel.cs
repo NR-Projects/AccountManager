@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Account_Manager.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,8 +17,9 @@ namespace Account_Manager.MVVM.ViewModel
         public ICommand NavigateAccounts { get; set; }
         public ICommand NavigateSites { get; set; }
 
-        public HomeViewModel()
+        public HomeViewModel(ServiceCollection serviceCollection)
         {
+            _ServiceCollection = serviceCollection;
         }
     }
 }

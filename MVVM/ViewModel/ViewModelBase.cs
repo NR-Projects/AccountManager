@@ -16,6 +16,13 @@ namespace Account_Manager.MVVM.ViewModel
         public event PropertyChangedEventHandler? PropertyChanged;
         public abstract string ViewName { get; }
 
+        protected virtual void InitializeUI() { }
+
+        public ViewModelBase()
+        {
+            InitializeUI();
+        }
+
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = "")
