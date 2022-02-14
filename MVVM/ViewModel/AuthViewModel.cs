@@ -14,13 +14,12 @@ namespace Account_Manager.MVVM.ViewModel
     {
         public override string ViewName => "Authentication";
 
-        public ICommand NavigateHome { get; set; }
+        public ICommand? NavigateHome { get; set; }
 
-        public string EnterPassword { get; set; }
+        public string? EnterPassword { get; set; }
 
-        public AuthViewModel(ServiceCollection serviceCollection)
+        public AuthViewModel(ServiceCollection serviceCollection) : base(serviceCollection)
         {
-            _ServiceCollection = serviceCollection;
         }
 
         protected override void InitializeUI()

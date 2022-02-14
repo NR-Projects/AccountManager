@@ -30,9 +30,8 @@ namespace Account_Manager.MVVM.ViewModel
             }
         }
 
-        public MainViewModel(ServiceCollection serviceCollection)
+        public MainViewModel(ServiceCollection serviceCollection) : base(serviceCollection)
         {
-            _ServiceCollection = serviceCollection;
             _ServiceCollection.GetNavService().CurrentViewModelChanged += OnCurrectViewModelChanged;
         }
 

@@ -12,14 +12,13 @@ namespace Account_Manager.MVVM.ViewModel
     {
         public override string ViewName => "Home";
 
-        public ICommand LogOut { get; set; }
-        public ICommand Settings { get; set; }
-        public ICommand NavigateAccounts { get; set; }
-        public ICommand NavigateSites { get; set; }
+        public ICommand? LogOut { get; set; }
+        public ICommand? Settings { get; set; }
+        public ICommand? NavigateAccounts { get; set; }
+        public ICommand? NavigateSites { get; set; }
 
-        public HomeViewModel(ServiceCollection serviceCollection)
+        public HomeViewModel(ServiceCollection serviceCollection) : base(serviceCollection)
         {
-            _ServiceCollection = serviceCollection;
         }
     }
 }

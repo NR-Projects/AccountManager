@@ -11,15 +11,19 @@ namespace Account_Manager.MVVM.ViewModel
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
-        protected ServiceCollection? _ServiceCollection;
+        protected  ServiceCollection _ServiceCollection;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         public abstract string ViewName { get; }
 
         protected virtual void InitializeUI() { }
 
-        public ViewModelBase()
+        public ViewModelBase(ServiceCollection serviceCollection)
         {
+            // Initialize Services
+            _ServiceCollection = serviceCollection;
+
+            // Initalize UI
             InitializeUI();
         }
 
