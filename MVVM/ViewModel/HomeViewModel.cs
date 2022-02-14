@@ -1,4 +1,5 @@
-﻿using Account_Manager.Services;
+﻿using Account_Manager.Commands;
+using Account_Manager.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,13 @@ namespace Account_Manager.MVVM.ViewModel
 
         public HomeViewModel(ServiceCollection serviceCollection) : base(serviceCollection)
         {
+        }
+
+        protected override void InitializeUI()
+        {
+            LogOut = new ExecuteOnlyCommand((_) => {
+                _ServiceCollection.GetNavService().Navigate(new AuthViewModel(_ServiceCollection));
+            });
         }
     }
 }
