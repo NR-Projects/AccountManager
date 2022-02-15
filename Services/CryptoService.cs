@@ -11,8 +11,8 @@ namespace Account_Manager.Services
 {
     public class CryptoService
     {
-        private string? UserKey;                // Generated User Key when password is set
-        private string? AppHashedPassword;      // Hashed Password from Password Set
+        private string UserKey;                // Generated User Key when password is set
+        private string AppHashedPassword;      // Hashed Password from Password Set
         private string AppRuntimeKey;           // Hardcoded App Key salted with RawPassword
 
         public CryptoService()
