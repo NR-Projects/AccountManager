@@ -22,7 +22,7 @@ namespace Account_Manager.MVVM.ViewModel
         {
         }
 
-        protected override void InitializeUI()
+        protected override void InitializeButtons()
         {
             LogOut = new ExecuteOnlyCommand((_) => {
                 _ServiceCollection.GetNavService().Navigate(new AuthViewModel(_ServiceCollection));

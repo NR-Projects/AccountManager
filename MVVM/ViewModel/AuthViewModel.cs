@@ -22,7 +22,7 @@ namespace Account_Manager.MVVM.ViewModel
         {
         }
 
-        protected override void InitializeUI()
+        protected override void InitializeButtons()
         {
             NavigateHome = new ExecuteOnlyCommand((_) => {
                 if (EnterPassword == "12345")
