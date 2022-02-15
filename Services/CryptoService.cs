@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Account_Manager.MVVM.Model;
+using Account_Manager.Storage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -9,14 +11,18 @@ namespace Account_Manager.Services
 {
     public class CryptoService
     {
-        private string UserKey;                // Generated User Key when password is set
-        private string AppHashedPassword;      // Hashed Password from Password Set
-        private string AppRuntimeKey;          // Hardcoded App Key salted with RawPassword
+        private string? UserKey;                // Generated User Key when password is set
+        private string? AppHashedPassword;      // Hashed Password from Password Set
+        private string AppRuntimeKey;           // Hardcoded App Key salted with RawPassword
 
-        public CryptoService(string _UserKey, string _AppHashedPassword)
+        public CryptoService()
         {
-            UserKey = _UserKey;
-            AppHashedPassword = _AppHashedPassword;
+            AuthModel authModel = LocalStorage.GetAuthData();
+            if (authModel != null)
+            {
+                UserKey = authModel.UserKey;
+                AppHashedPassword = authModel.HashedPassword;
+            }
             AppRuntimeKey = "";
         }
 
@@ -25,9 +31,9 @@ namespace Account_Manager.Services
             return GenerateRandomString(16);
         }
 
-        public bool CheckValidPassword(string RawEnteredPassword, string StoredHashedPassword)
+        public bool CheckValidPassword(string RawEnteredPassword)
         {
-            if (HashPassword(RawEnteredPassword).Equals(StoredHashedPassword))
+            if (HashPassword(RawEnteredPassword).Equals(AppHashedPassword))
                 return true;
             return false;
         }
