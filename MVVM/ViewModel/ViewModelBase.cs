@@ -16,7 +16,17 @@ namespace Account_Manager.MVVM.ViewModel
         public event PropertyChangedEventHandler? PropertyChanged;
         public abstract string ViewName { get; }
 
-        protected virtual void InitializeUI() { }
+        public virtual void OnEnterView() { }
+        public virtual void OnExitView() { }
+
+        protected virtual void InitializeButtons() { }
+        protected virtual void InitializeProperties() { }
+
+        private void SetupUI()
+        {
+            InitializeButtons();
+            InitializeProperties();
+        }
 
         public ViewModelBase(ServiceCollection serviceCollection)
         {
@@ -24,7 +34,7 @@ namespace Account_Manager.MVVM.ViewModel
             _ServiceCollection = serviceCollection;
 
             // Initalize UI
-            InitializeUI();
+            SetupUI();
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

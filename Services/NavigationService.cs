@@ -15,9 +15,20 @@ namespace Account_Manager.Services
 
         public void Navigate(ViewModelBase ViewModelToLoad)
         {
+            // Call OnExitView of Last ViewModel
+            if(_CurrentViewModel != null)
+                _CurrentViewModel.OnExitView();
+
+            // Set New ViewModel
             _CurrentViewModel = ViewModelToLoad;
+
+            // Set New ViewModel Name
             CurrentViewName = ViewModelToLoad.ViewName;
 
+            // Call OnEnterView of Loaded ViewModel
+            _CurrentViewModel.OnEnterView();
+
+            // Call ViewModel Change
             OnCurrentViewModelChanged();
         }
 
