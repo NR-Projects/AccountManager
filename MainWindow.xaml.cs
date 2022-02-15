@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static Account_Manager.Consts;
 
 namespace Account_Manager
 {
@@ -25,6 +26,7 @@ namespace Account_Manager
         private ServiceCollection serviceCollection = new ServiceCollection();
         public MainWindow()
         {
+            Logger.LogToFile(PropertyType.VIEW, "-- Application Start --");
             serviceCollection.GetNavService().Navigate(new AuthViewModel(serviceCollection));
             DataContext = new MainViewModel(serviceCollection);
             InitializeComponent();
@@ -43,6 +45,12 @@ namespace Account_Manager
         private void Window_Minimize(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            Logger.LogToFile(PropertyType.VIEW, "-- Application End --");
         }
     }
 }

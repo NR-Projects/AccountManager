@@ -25,6 +25,8 @@ namespace Account_Manager
             public const string AUTHENTICATION_PATH = TOOLS_PATH + "AppAuth.auth";
             public const string ACCOUNTS_PATH = TOOLS_PATH + "Accounts.dat";
             public const string SITES_PATH = TOOLS_PATH + "Sites.dat";
+
+            public const string LOG_PATH = BASE_PATH + "Logs.txt";
         }
 
         public class DataType
@@ -38,6 +40,15 @@ namespace Account_Manager
         {
             public const string OFFLINE = "Offline";
             public const string ONLINE = "Online";
+        }
+
+        public class PropertyType
+        {
+            public const string VIEW = "View";
+            public const string VIEWMODEL = "ViewModel";
+            public const string SERVICE = "Service";
+            public const string STORAGE = "Storage";
+            public const string COMMAND = "Command";
         }
     }
 }
