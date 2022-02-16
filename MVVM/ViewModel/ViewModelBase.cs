@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static Account_Manager.Consts;
 
 namespace Account_Manager.MVVM.ViewModel
 {
@@ -16,8 +17,14 @@ namespace Account_Manager.MVVM.ViewModel
         public event PropertyChangedEventHandler? PropertyChanged;
         public abstract string ViewName { get; }
 
-        public virtual void OnEnterView() { }
-        public virtual void OnExitView() { }
+        public virtual void OnEnterView()
+        {
+            Logger.LogToFile(PropertyType.VIEWMODEL, String.Join(' ', ViewName, "Has been Loaded"));
+        }
+        public virtual void OnExitView()
+        {
+            Logger.LogToFile(PropertyType.VIEWMODEL, String.Join(' ', ViewName, "Has been Unloaded"));
+        }
 
         protected virtual void InitializeButtons() { }
         protected virtual void InitializeProperties() { }
