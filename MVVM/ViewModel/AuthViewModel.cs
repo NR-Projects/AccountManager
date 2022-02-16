@@ -24,6 +24,8 @@ namespace Account_Manager.MVVM.ViewModel
 
         protected override void InitializeButtons()
         {
+            base.InitializeButtons();
+
             NavigateHome = new ExecuteOnlyCommand((_) => {
                 if (EnterPassword == "12345")
                     _ServiceCollection.GetNavService().Navigate(new HomeViewModel(_ServiceCollection));

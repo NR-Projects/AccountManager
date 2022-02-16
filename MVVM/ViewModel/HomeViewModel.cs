@@ -24,8 +24,15 @@ namespace Account_Manager.MVVM.ViewModel
 
         protected override void InitializeButtons()
         {
+            base.InitializeButtons();
+
             LogOut = new ExecuteOnlyCommand((_) => {
                 _ServiceCollection.GetNavService().Navigate(new AuthViewModel(_ServiceCollection));
+            });
+
+            Settings = new ExecuteOnlyCommand((_) =>
+            {
+                _ServiceCollection.GetNavService().Navigate(new SettingsViewModel(_ServiceCollection));
             });
         }
     }
