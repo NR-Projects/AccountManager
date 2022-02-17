@@ -17,7 +17,7 @@ namespace Account_Manager.Services
 
         public CryptoService()
         {
-            AuthModel authModel = LocalStorage.GetAuthData();
+            AuthModel authModel = DataService.GetAuthData();
             if (authModel != null)
             {
                 UserKey = authModel.UserKey;

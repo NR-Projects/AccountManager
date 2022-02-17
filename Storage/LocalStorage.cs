@@ -55,6 +55,35 @@ namespace Account_Manager.Storage
             }
         }
 
+        public bool UpdateDataEncryption(string Key, string SecureNewPassword)
+        {
+            try
+            {
+                List<AccountModel>? AccountDataList = JsonSerializer.Deserialize<List<AccountModel>>(GetData(DataType.ACCOUNT));
+                List<SiteModel>? SiteDataList = JsonSerializer.Deserialize<List<SiteModel>>(GetData(DataType.SITE));
+
+                // Set and Get Auth Data
+                if (AccountDataList != null || SiteDataList != null)
+                {
+                    SetAuthData(Key, SecureNewPassword);
+
+                    SetData("", DataType.ACCOUNT, FileWriteType.Clear);
+                    SetData("", DataType.SITE, FileWriteType.Clear);
+
+                    SetData(JsonSerializer.Serialize(AccountDataList), DataType.ACCOUNT, FileWriteType.Append);
+                    SetData(JsonSerializer.Serialize(SiteDataList), DataType.SITE, FileWriteType.Append);
+                }
+                else
+                    return false;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public bool CreateLocalData<T>(string _DataType, T NewData)
         {
             try
