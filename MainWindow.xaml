@@ -71,7 +71,7 @@
             <Separator
                 Grid.Row="1"
                 VerticalAlignment="Top"/>
-
+            
             <ContentControl
                 Grid.Row="1"
                 Content="{Binding CurrentViewModel}">
@@ -85,10 +85,11 @@
                     <DataTemplate DataType="{x:Type viewmodels:SettingsViewModel}">
                         <views:SettingsView />
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:ShowAccountViewModel}">
+                        <views:ShowAccountView />
+                    </DataTemplate>
                 </ContentControl.Resources>
             </ContentControl>
-
         </Grid>
-
     </Border>
 </Window>

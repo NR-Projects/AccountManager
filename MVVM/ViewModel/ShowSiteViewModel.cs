@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Account_Manager.MVVM.ViewModel
 {
-    internal class ShowSiteViewModel
+    public class ShowSiteViewModel
     {
     }
 }

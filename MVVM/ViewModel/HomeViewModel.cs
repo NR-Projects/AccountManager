@@ -34,6 +34,10 @@ namespace Account_Manager.MVVM.ViewModel
             {
                 _ServiceCollection.GetNavService().Navigate(new SettingsViewModel(_ServiceCollection));
             });
+
+            NavigateAccounts = new ExecuteOnlyCommand((_) => {
+                _ServiceCollection.GetNavService().Navigate(new ShowAccountViewModel(_ServiceCollection));
+            });
         }
     }
 }

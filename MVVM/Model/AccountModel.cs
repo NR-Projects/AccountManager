@@ -8,9 +8,10 @@ namespace Account_Manager.MVVM.Model
 {
     public class AccountModel : ModelBase
     {
-        public SiteModel? Site { get; set; }
-        public string? Name { get; set; }
-        public string? Alias { get; set; }
+        public string? Site;
+        public string? Label { get; set; }
+        public string? Username { get; set; }
+        public string? Password { get; set; }
 
         public override bool Equals(ModelBase Model)
         {
@@ -18,14 +19,14 @@ namespace Account_Manager.MVVM.Model
             {
                 if (Model == null)
                     return false;
-                if (Name == null || Alias == null)
+                if (Site == null || Label == null)
                     return false;
 
                 AccountModel? accountModel = Model as AccountModel;
 
                 if (accountModel == null)
                     return false;
-                if (this.Name != accountModel.Name || this.Alias != accountModel.Alias)
+                if (this.Site != accountModel.Site || this.Label != accountModel.Label)
                     return false;
                 return true;
             }
