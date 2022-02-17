@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static Account_Manager.Consts;
 
 namespace Account_Manager.MVVM.ViewModel
 {
@@ -19,18 +20,32 @@ namespace Account_Manager.MVVM.ViewModel
         public ICommand? NavigateModifyAccount { get; set; }
         public ICommand? ReloadAccounts { get; set; }
 
-        public ObservableCollection<AccountModel>? AccountCollection { get; set; }
-        public ObservableCollection<string>? SiteCollection { get; set; }
+        public ObservableCollection<AccountModel>? AccountCollection { get => _FilteredAccountCollection; set => SetProperty(ref _FilteredAccountCollection, value); }
+        public ObservableCollection<string>? SiteCollection { get => _SiteCollection; set => SetProperty(ref _SiteCollection, value); }
+        public string? CurrentSiteSelected
+        {
+            get
+            {
+                if (_CurrentSiteSelected == null)
+                    _CurrentSiteSelected = "All";
+                return _CurrentSiteSelected;
+            }
 
-        public string? CurrentSiteSelected { get; set; }
+            set
+            {
+                SetProperty(ref _CurrentSiteSelected, value);
+                OnCurrentSiteChanged();
+            }
+        }
+
+        private ObservableCollection<AccountModel>? _UnfilteredAccountCollection;
+        private ObservableCollection<AccountModel>? _FilteredAccountCollection;
+        private ObservableCollection<string>? _SiteCollection;
+        private string? _CurrentSiteSelected;
+
 
         public ShowAccountViewModel(ServiceCollection serviceCollection) : base(serviceCollection)
         {
-        }
-
-        public override void OnEnterView()
-        {
-            base.OnEnterView();
         }
 
         protected override void InitializeButtons()
@@ -45,6 +60,44 @@ namespace Account_Manager.MVVM.ViewModel
         protected override void InitializeProperties()
         {
             base.InitializeProperties();
+
+            // Add Site Collection
+            _SiteCollection = new ObservableCollection<string>();
+            _SiteCollection.Add("All");
+
+            List<SiteModel> SiteList = _ServiceCollection.GetDataService().Read_Data<SiteModel>(DataType.SITE, DataService.DataSource.Local);
+            foreach (SiteModel site in SiteList)
+            {
+                if(site != null && site.Name != null)
+                {
+                    _SiteCollection.Add(site.Name);
+                }
+            }
+
+            // Add Account Collection
+            _UnfilteredAccountCollection = new ObservableCollection<AccountModel>(_ServiceCollection.GetDataService().Read_Data<AccountModel>(DataType.ACCOUNT, DataService.DataSource.Local));
+            _FilteredAccountCollection = new ObservableCollection<AccountModel>(_UnfilteredAccountCollection);
+        }
+
+        private void OnCurrentSiteChanged()
+        {
+            if (CurrentSiteSelected != null && AccountCollection != null && _UnfilteredAccountCollection != null)
+            {
+                if (CurrentSiteSelected.Equals("All"))
+                {
+                    AccountCollection = new ObservableCollection<AccountModel>(_UnfilteredAccountCollection);
+                }
+                else
+                {
+                    AccountCollection.Clear();
+
+                    foreach (AccountModel Account in _UnfilteredAccountCollection)
+                    {
+                        if (Account.Site != null && Account.Site.Contains(CurrentSiteSelected))
+                            AccountCollection.Add(Account);
+                    }
+                }
+            }
         }
     }
 }
