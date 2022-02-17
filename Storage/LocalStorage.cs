@@ -22,7 +22,7 @@ namespace Account_Manager.Storage
 
         private enum FileWriteType { Write, Append, Clear }
 
-        public bool SetAuthData(string UserKey, string HashedPassword)
+        public static bool SetAuthData(string UserKey, string HashedPassword)
         {
             try
             {
@@ -32,7 +32,8 @@ namespace Account_Manager.Storage
                     HashedPassword = HashedPassword
                 };
 
-                return SetData(DataType.AUTH, JsonSerializer.Serialize(appAuthModel), FileWriteType.Write);
+                File.WriteAllText(GetFilePathFromDataType(DataType.AUTH), JsonSerializer.Serialize(appAuthModel));
+                return true;
             }
             catch (Exception ex)
             {
@@ -199,8 +200,7 @@ namespace Account_Manager.Storage
         {
             try
             {
-                if (!_Type.Equals(DataType.AUTH))
-                    _Data = _CryptoService.Encrypt(_Data);
+                _Data = _CryptoService.Encrypt(_Data);
 
                 switch (_FileWriteType)
                 {

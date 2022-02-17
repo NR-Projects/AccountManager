@@ -27,7 +27,7 @@ namespace Account_Manager.MVVM.ViewModel
             base.InitializeButtons();
 
             NavigateHome = new ExecuteOnlyCommand((_) => {
-                if (EnterPassword == "12345")
+                if (EnterPassword != null && _ServiceCollection.GetCryptoService().CheckValidPassword(EnterPassword))
                     _ServiceCollection.GetNavService().Navigate(new HomeViewModel(_ServiceCollection));
                 else
                     MessageBox.Show("Authentication Failed", "Unauthorized");

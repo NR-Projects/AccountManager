@@ -38,17 +38,22 @@ namespace Account_Manager.Services
             return false;
         }
 
-        public string HashPassword(string Password)
+        public string HashPassword(string Password, string Key = "")
         {
+            string _Key = UserKey;
+
+            if(Key != "")
+                _Key = Key;
+
             // Add Key To Password
-            Password += UserKey;
+            Password += _Key;
 
             // Hash Password
             byte[] HashedBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(Password));
             string HashedString = BitConverter.ToString(HashedBytes).Replace("-", "");
 
             // Hash Again With App Key
-            byte[] AuthPasswordBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(MixStrings(HashedString, UserKey)));
+            byte[] AuthPasswordBytes = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(MixStrings(HashedString, _Key)));
 
             return BitConverter.ToString(AuthPasswordBytes).Replace("-", "");
         }

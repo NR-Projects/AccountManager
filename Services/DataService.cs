@@ -92,9 +92,9 @@ namespace Account_Manager.Services
         }
 
 
-        public bool SetAuthData(string Key, string AuthPassword)
+        public static bool SetAuthData(string Key, string AuthPassword)
         {
-            return _LocalStorage.SetAuthData(Key, AuthPassword);
+            return LocalStorage.SetAuthData(Key, AuthPassword);
         }
 
         public static AuthModel GetAuthData()

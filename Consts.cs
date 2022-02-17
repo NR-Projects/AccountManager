@@ -20,7 +20,7 @@ namespace Account_Manager
 
             public const string APP_INFO_PATH = BASE_PATH + "AppData.app";
 
-            public const string TOOLS_PATH = BASE_PATH + "Tools";
+            public const string TOOLS_PATH = BASE_PATH + "Tools\\";
 
             public const string AUTHENTICATION_PATH = TOOLS_PATH + "AppAuth.auth";
             public const string ACCOUNTS_PATH = TOOLS_PATH + "Accounts.dat";

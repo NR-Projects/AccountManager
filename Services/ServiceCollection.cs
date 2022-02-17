@@ -33,8 +33,10 @@ namespace Account_Manager.Services
 
         public DataService GetDataService()
         {
-            _LocalStorage = new LocalStorage(GetCryptoService());
-            _DataService = new DataService(_LocalStorage);
+            if (_LocalStorage == null)
+                _LocalStorage = new LocalStorage(GetCryptoService());
+            if (_DataService == null)
+                _DataService = new DataService(_LocalStorage);
             return _DataService;
         }
     }
