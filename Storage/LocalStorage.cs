@@ -37,6 +37,7 @@ namespace Account_Manager.Storage
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
                 return false;
             }
         }
@@ -52,6 +53,7 @@ namespace Account_Manager.Storage
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
                 return new AuthModel();
             }
         }
@@ -81,6 +83,7 @@ namespace Account_Manager.Storage
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
                 return false;
             }
         }
@@ -103,6 +106,7 @@ namespace Account_Manager.Storage
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
                 return false;
             }
         }
@@ -118,6 +122,7 @@ namespace Account_Manager.Storage
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
                 return new List<T>();
             }
         }
@@ -148,6 +153,7 @@ namespace Account_Manager.Storage
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
                 return false;
             }
         }
@@ -178,6 +184,7 @@ namespace Account_Manager.Storage
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
                 return false;
             }
         }
@@ -219,6 +226,7 @@ namespace Account_Manager.Storage
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
                 return false;
             }
         }
@@ -233,6 +241,7 @@ namespace Account_Manager.Storage
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
                 return "";
             }
         }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Account_Manager.Consts;
 
 namespace Account_Manager.Services
 {
@@ -33,6 +34,7 @@ namespace Account_Manager.Services
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.SERVICE, $"{ex.Message} >> {ex.StackTrace}");
                 return false;
             }
         }
@@ -51,6 +53,7 @@ namespace Account_Manager.Services
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.SERVICE, $"{ex.Message} >> {ex.StackTrace}");
                 return new List<T>();
             }
         }
@@ -69,6 +72,7 @@ namespace Account_Manager.Services
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.SERVICE, $"{ex.Message} >> {ex.StackTrace}");
                 return false;
             }
         }
@@ -87,6 +91,7 @@ namespace Account_Manager.Services
             }
             catch (Exception ex)
             {
+                Logger.LogToFile(PropertyType.SERVICE, $"{ex.Message} >> {ex.StackTrace}");
                 return false;
             }
         }
