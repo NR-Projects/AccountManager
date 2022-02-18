@@ -67,7 +67,7 @@
                                 Margin="0,0,20,0" />
                             <ComboBox
                                 SelectedItem="{Binding AddAccountSite}"
-                                ItemsSource="{Binding SiteList}"/>
+                                ItemsSource="{Binding SiteCollection}"/>
                         </StackPanel>
 
                         <StackPanel
@@ -134,7 +134,7 @@
                                     Content="Site: "
                                     Margin="0,0,20,0" />
                                 <ComboBox
-                                    ItemsSource="{Binding SiteList}"
+                                    ItemsSource="{Binding SiteCollection}"
                                     SelectedItem="{Binding DeleteAccountSite}"/>
                             </StackPanel>
 
@@ -147,7 +147,7 @@
                                     Content="Label: "
                                     Margin="0,0,20,0" />
                                 <ComboBox
-                                    ItemsSource="{Binding LabelList}"
+                                    ItemsSource="{Binding LabelCollection}"
                                     SelectedItem="{Binding DeleteAccountLabel}"/>
                             </StackPanel>
 
@@ -195,7 +195,7 @@
                                     Content="Site: "
                                     Margin="0,0,20,0" />
                                 <ComboBox
-                                    ItemsSource="{Binding SiteList}"
+                                    ItemsSource="{Binding SiteCollection}"
                                     SelectedItem="{Binding UpdateShowAccountSite}"/>
                             </StackPanel>
 
@@ -208,7 +208,7 @@
                                     Content="Label: "
                                     Margin="0,0,20,0" />
                                 <ComboBox
-                                    ItemsSource="{Binding LabelList}"
+                                    ItemsSource="{Binding LabelCollection}"
                                     SelectedItem="{Binding UpdateShowAccountLabel}"/>
                             </StackPanel>
 
@@ -247,7 +247,7 @@
                                     Content="Site: "
                                     Margin="0,0,20,0" />
                                 <ComboBox
-                                    ItemsSource="{Binding SiteList}"
+                                    ItemsSource="{Binding SiteCollection}"
                                     SelectedItem="{Binding UpdateAccountSite}"/>
                             </StackPanel>
 

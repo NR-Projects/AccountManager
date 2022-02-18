@@ -55,6 +55,10 @@ namespace Account_Manager.MVVM.ViewModel
             NavigateBackHome = new ExecuteOnlyCommand((_) => {
                 _ServiceCollection.GetNavService().Navigate(new HomeViewModel(_ServiceCollection));
             });
+
+            NavigateModifyAccount = new ExecuteOnlyCommand((_) => { 
+                _ServiceCollection.GetNavService().Navigate(new ModifyAccountViewModel(_ServiceCollection));
+            });
         }
 
         protected override void InitializeProperties()
