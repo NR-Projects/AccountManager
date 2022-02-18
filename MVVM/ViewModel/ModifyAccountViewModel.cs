@@ -60,7 +60,7 @@ namespace Account_Manager.MVVM.ViewModel
         private void InitializeBaseButtons()
         {
             NavigateBackAccounts = new ExecuteOnlyCommand((_) => {
-                _ServiceCollection.GetNavService().Navigate(new HomeViewModel(_ServiceCollection));
+                _ServiceCollection.GetNavService().Navigate(new ShowAccountViewModel(_ServiceCollection));
             });
         }
 
