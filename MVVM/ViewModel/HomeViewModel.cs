@@ -38,6 +38,10 @@ namespace Account_Manager.MVVM.ViewModel
             NavigateAccounts = new ExecuteOnlyCommand((_) => {
                 _ServiceCollection.GetNavService().Navigate(new ShowAccountViewModel(_ServiceCollection));
             });
+
+            NavigateSites = new ExecuteOnlyCommand((_) => {
+                _ServiceCollection.GetNavService().Navigate(new ShowSiteViewModel(_ServiceCollection));
+            });
         }
     }
 }

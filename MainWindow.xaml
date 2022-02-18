@@ -91,6 +91,12 @@
                     <DataTemplate DataType="{x:Type viewmodels:ModifyAccountViewModel}">
                         <views:ModifyAccountView />
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:ShowSiteViewModel}">
+                        <views:ShowSiteView />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:ModifySiteViewModel}">
+                        <views:ModifySiteView />
+                    </DataTemplate>
                 </ContentControl.Resources>
             </ContentControl>
         </Grid>

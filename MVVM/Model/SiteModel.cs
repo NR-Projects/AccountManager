@@ -10,6 +10,7 @@ namespace Account_Manager.MVVM.Model
     {
         public string? Name { get; set; }
         public string? Link { get; set; }
+        public string? Description { get; set; }
 
         public override bool Equals(ModelBase Model)
         {
