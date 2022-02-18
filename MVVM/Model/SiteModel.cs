@@ -8,7 +8,7 @@ namespace Account_Manager.MVVM.Model
 {
     public class SiteModel : ModelBase
     {
-        public string? Name { get; set; }
+        public string? Label { get; set; }
         public string? Link { get; set; }
         public string? Description { get; set; }
 
@@ -18,14 +18,14 @@ namespace Account_Manager.MVVM.Model
             {
                 if (Model == null)
                     return false;
-                if (Name == null || Link == null)
+                if (Label == null || Link == null)
                     return false;
 
                 SiteModel? siteModel = Model as SiteModel;
 
                 if (siteModel == null)
                     return false;
-                if (this.Name != siteModel.Name || this.Link != siteModel.Link)
+                if (this.Label != siteModel.Label || this.Link != siteModel.Link)
                     return false;
                 return true;
             }

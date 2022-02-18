@@ -82,9 +82,9 @@ namespace Account_Manager.MVVM.ViewModel
 
             foreach (SiteModel Site in _SiteList)
             {
-                if (Site != null && Site.Name != null)
+                if (Site != null && Site.Label != null)
                 {
-                    SiteCollection.Add(Site.Name);
+                    SiteCollection.Add(Site.Label);
                 }
             }
         }

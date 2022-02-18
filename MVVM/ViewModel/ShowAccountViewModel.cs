@@ -72,9 +72,9 @@ namespace Account_Manager.MVVM.ViewModel
             List<SiteModel> SiteList = _ServiceCollection.GetDataService().Read_Data<SiteModel>(DataType.SITE, DataService.DataSource.Local);
             foreach (SiteModel site in SiteList)
             {
-                if(site != null && site.Name != null)
+                if (site != null && site.Label != null)
                 {
-                    _SiteCollection.Add(site.Name);
+                    _SiteCollection.Add(site.Label);
                 }
             }
 
