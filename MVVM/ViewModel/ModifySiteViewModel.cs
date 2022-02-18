@@ -83,16 +83,17 @@ namespace Account_Manager.MVVM.ViewModel
                 string ErrorList = "";
 
                 if (String.IsNullOrEmpty(AddSiteLabel))
-                    ErrorList += "Account Label is Empty \n";
+                    ErrorList += "Site Label is Empty \n";
                 if (String.IsNullOrEmpty(AddSiteLink))
-                    ErrorList += "No Account Site Selected \n";
+                    ErrorList += "Site Link is Empty \n";
                 if (String.IsNullOrEmpty(AddSiteDescription))
-                    ErrorList += "Account Username is Empty \n";
+                    ErrorList += "Site Description is Empty \n";
 
-                MessageBox.Show(ErrorList, "Add Site");
-
-                if (ErrorList.Equals(""))
+                if (!ErrorList.Equals(""))
+                {
+                    MessageBox.Show(ErrorList, "Add Site");
                     return;
+                }
 
                 SiteModel siteModel = new SiteModel()
                 {
@@ -100,6 +101,8 @@ namespace Account_Manager.MVVM.ViewModel
                     Link = AddSiteLink,
                     Description = AddSiteDescription
                 };
+
+                _ServiceCollection.GetDataService().Create_Data<SiteModel>(DataType.SITE, siteModel, DataService.DataSource.Local);
 
                 MessageBox.Show("Site Info Added", "Site");
 
@@ -134,14 +137,15 @@ namespace Account_Manager.MVVM.ViewModel
                 string ErrorList = "";
 
                 if (String.IsNullOrEmpty(DeleteSiteLabel))
-                    ErrorList += "Account Label is Empty \n";
+                    ErrorList += "No Site Label Selected \n";
 
-                MessageBox.Show(ErrorList, "Add Site");
-
-                if (ErrorList.Equals(""))
+                if (!ErrorList.Equals(""))
+                {
+                    MessageBox.Show(ErrorList, "Delete Site");
                     return;
+                }
 
-                if (LabelCollection == null)
+                if (_SiteList == null)
                     return;
 
                 foreach (SiteModel Site in _SiteList)
@@ -173,6 +177,13 @@ namespace Account_Manager.MVVM.ViewModel
 
         private void InitializeDeleteProperties()
         {
+        }
+
+        private void OnDeleteLabelSelected()
+        {
+            if (_SiteList == null)
+                return;
+
             foreach (SiteModel Site in _SiteList)
             {
                 if (Site != null && Site.Label != null && Site.Label.Equals(DeleteSiteLabel))
@@ -183,11 +194,6 @@ namespace Account_Manager.MVVM.ViewModel
             }
 
             DeleteSiteDisplay = "<No Site Selected>";
-        }
-
-        private void OnDeleteLabelSelected()
-        {
-            throw new NotImplementedException();
         }
     }
 
@@ -200,7 +206,7 @@ namespace Account_Manager.MVVM.ViewModel
         public string? UpdateSiteDescription { get => _UpdateSiteDescription; set => SetProperty(ref _UpdateSiteDescription, value); }
         public ICommand? UpdateSite { get; set; }
 
-        private string? _UpdateSiteLabelSelected;
+        private string _UpdateSiteLabelSelected = "";
 
         private string? _UpdateSiteLabel;
         private string? _UpdateSiteLink;
@@ -213,25 +219,26 @@ namespace Account_Manager.MVVM.ViewModel
                 string ErrorList = "";
 
                 if (String.IsNullOrEmpty(UpdateShowSiteLabel))
-                    ErrorList += "Account Label is Empty \n";
+                    ErrorList += "No Existing Site Label is Selected \n";
                 if (String.IsNullOrEmpty(UpdateSiteLabel))
-                    ErrorList += "No Account Site Selected \n";
+                    ErrorList += "Site Label is Empty \n";
                 if (String.IsNullOrEmpty(UpdateSiteLink))
-                    ErrorList += "Account Username is Empty \n";
+                    ErrorList += "Site Link is Empty \n";
                 if (String.IsNullOrEmpty(UpdateSiteDescription))
-                    ErrorList += "Account Label is Empty \n";
+                    ErrorList += "Site Description is Empty \n";
 
-                MessageBox.Show(ErrorList, "Add Site");
-
-                if (ErrorList.Equals(""))
+                if (!ErrorList.Equals(""))
+                {
+                    MessageBox.Show(ErrorList, "Update Site");
                     return;
+                }
 
                 if (_SiteList == null)
                     return;
 
                 foreach (SiteModel Site in _SiteList)
                 {
-                    if (Site.Label.Equals(UpdateShowSiteLabel))
+                    if (Site != null && Site.Label != null && Site.Label.Equals(UpdateShowSiteLabel))
                     {
                         SiteModel UpdatedSite = new SiteModel
                         {
@@ -246,7 +253,7 @@ namespace Account_Manager.MVVM.ViewModel
 
                         foreach (AccountModel Account in AccountList)
                         {
-                            if (Account.Site.Equals(UpdateShowSiteLabel))
+                            if (Account != null && Account.Site != null && Account.Site.Equals(UpdateShowSiteLabel))
                             {
                                 AccountModel UpdatedAccount = new AccountModel
                                 {

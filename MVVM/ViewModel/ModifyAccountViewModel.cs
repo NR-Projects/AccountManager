@@ -113,10 +113,11 @@ namespace Account_Manager.MVVM.ViewModel
                 if (String.IsNullOrEmpty(AddAccountPassword))
                     ErrorList += "Account Password is Empty \n";
 
-                MessageBox.Show(ErrorList, "Add Account");
-
-                if (ErrorList.Equals(""))
+                if (!ErrorList.Equals(""))
+                {
+                    MessageBox.Show(ErrorList, "Add Account");
                     return;
+                }
 
                 AccountModel accountModel = new AccountModel()
                 {
@@ -125,6 +126,8 @@ namespace Account_Manager.MVVM.ViewModel
                     Username = AddAccountUsername,
                     Password = AddAccountPassword
                 };
+
+                _ServiceCollection.GetDataService().Create_Data(DataType.ACCOUNT, accountModel, DataService.DataSource.Local);
 
                 MessageBox.Show("Account Info Added", "Account");
 
@@ -166,10 +169,11 @@ namespace Account_Manager.MVVM.ViewModel
                 if (String.IsNullOrEmpty(DeleteAccountSite))
                     ErrorList += "No Account Site Selected \n";
 
-                MessageBox.Show(ErrorList, "Delete Account");
-
-                if (ErrorList.Equals(""))
+                if (!ErrorList.Equals(""))
+                {
+                    MessageBox.Show(ErrorList, "Delete Account");
                     return;
+                }
 
                 if (_AccountList == null)
                     return;
@@ -268,9 +272,9 @@ namespace Account_Manager.MVVM.ViewModel
                 string ErrorList = "";
 
                 if (String.IsNullOrEmpty(UpdateShowAccountSite))
-                    ErrorList += "No Account Site Selected \n";
+                    ErrorList += "No Existing Account Site Selected \n";
                 if (String.IsNullOrEmpty(UpdateShowAccountLabel))
-                    ErrorList += "No Account Label Selected \n";
+                    ErrorList += "No Existing Account Label Selected \n";
                 if (String.IsNullOrEmpty(UpdateAccountLabel))
                     ErrorList += "Account Label is Empty \n";
                 if (String.IsNullOrEmpty(UpdateAccountSite))
@@ -280,10 +284,11 @@ namespace Account_Manager.MVVM.ViewModel
                 if (String.IsNullOrEmpty(UpdateAccountPassword))
                     ErrorList += "Account Password is Empty \n";
 
-                MessageBox.Show(ErrorList, "Update Account");
-
-                if (ErrorList.Equals(""))
+                if (!ErrorList.Equals(""))
+                {
+                    MessageBox.Show(ErrorList, "Update Account");
                     return;
+                }
 
                 AccountModel _UpdateAccountData = new AccountModel
                 {
@@ -370,6 +375,9 @@ namespace Account_Manager.MVVM.ViewModel
                 return;
 
             LabelCollection.Clear();
+
+            if (_AccountList == null)
+                return;
 
             foreach (AccountModel Account in _AccountList)
             {
