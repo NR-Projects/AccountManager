@@ -102,7 +102,7 @@ namespace Account_Manager.Storage
                 List<T>? DataList = JsonSerializer.Deserialize<List<T>>(GetData(_DataType));
 
                 // Add New Data
-                if (DataList != null)
+                if (DataList != null && NewData != null)
                     DataList.Add(NewData);
                 else
                     throw new NullReferenceException();

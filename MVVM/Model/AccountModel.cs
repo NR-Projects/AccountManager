@@ -8,7 +8,7 @@ namespace Account_Manager.MVVM.Model
 {
     public class AccountModel : ModelBase
     {
-        public string? Site;
+        public string? Site { get; set; }
         public string? Label { get; set; }
         public string? Username { get; set; }
         public string? Password { get; set; }
