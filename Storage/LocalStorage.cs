@@ -20,8 +20,10 @@ namespace Account_Manager.Storage
             _CryptoService = cryptoService;
 
             // Initialize File Contents
-            SetData(DataType.ACCOUNT, "[]", FileWriteType.Write);
-            SetData(DataType.SITE, "[]", FileWriteType.Write);
+            if (GetData(DataType.ACCOUNT).Length == 0)
+                SetData(DataType.ACCOUNT, "[]", FileWriteType.Write);
+            if (GetData(DataType.SITE).Length == 0)
+                SetData(DataType.SITE, "[]", FileWriteType.Write);
         }
 
         private enum FileWriteType { Write, Append, Clear }
