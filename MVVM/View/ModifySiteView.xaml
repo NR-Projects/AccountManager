@@ -119,7 +119,7 @@
                                     Content="Label: "
                                     Margin="0,0,20,0" />
                                 <ComboBox
-                                    ItemsSource="{Binding LabelList}"
+                                    ItemsSource="{Binding LabelCollection}"
                                     SelectedItem="{Binding DeleteSiteLabel}"/>
                             </StackPanel>
 
@@ -166,7 +166,7 @@
                                     Content="Label: "
                                     Margin="0,0,20,0" />
                                 <ComboBox
-                                    ItemsSource="{Binding LabelList}"
+                                    ItemsSource="{Binding LabelCollection}"
                                     SelectedItem="{Binding UpdateShowSiteLabel}"/>
                             </StackPanel>
 
