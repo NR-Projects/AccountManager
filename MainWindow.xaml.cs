@@ -28,11 +28,11 @@ namespace Account_Manager
 
         public MainWindow()
         {
+            InitializeAppFiles();
+
             Logger.LogToFile(PropertyType.VIEW, "-- Application Start --");
             serviceCollection.GetNavService().Navigate(new AuthViewModel(serviceCollection));
             DataContext = new MainViewModel(serviceCollection);
-
-            InitializeAppFiles();
 
             InitializeComponent();
         }
@@ -73,8 +73,10 @@ namespace Account_Manager
                 File.Create(Files.ACCOUNTS_PATH).Dispose();
             if (!File.Exists(Files.SITES_PATH))
                 File.Create(Files.SITES_PATH).Dispose();
+            if (!File.Exists(Files.LOG_PATH))
+                File.Create(Files.LOG_PATH).Dispose();
 
-            // Generate Default Authentication: Default Password is 00000
+            // Generate Default Authentication: Default Password is 12345
             if (File.ReadAllText(Files.AUTHENTICATION_PATH).Length == 0)
             {
                 string Key = new CryptoService().GenerateKey();

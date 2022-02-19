@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Account_Manager.Services
 {
@@ -18,7 +19,7 @@ namespace Account_Manager.Services
         public CryptoService()
         {
             AuthModel authModel = DataService.GetAuthData();
-            if (authModel != null)
+            if (authModel != null && authModel.UserKey != null && authModel.HashedPassword != null)
             {
                 UserKey = authModel.UserKey;
                 AppHashedPassword = authModel.HashedPassword;
@@ -69,7 +70,7 @@ namespace Account_Manager.Services
         public string Encrypt(string PlainText)
         {
             byte[] IV = Encoding.ASCII.GetBytes(ResizeString(AppHashedPassword, 16));
-            byte[] Key = Encoding.ASCII.GetBytes(AppRuntimeKey);
+            byte[] Key = Encoding.ASCII.GetBytes(ResizeString(AppRuntimeKey, 16));
             byte[] Data = Encoding.ASCII.GetBytes(PlainText);
 
             Aes aes = Aes.Create();
@@ -92,7 +93,7 @@ namespace Account_Manager.Services
         public string Decrypt(string CipherText)
         {
             byte[] IV = Encoding.ASCII.GetBytes(ResizeString(AppHashedPassword, 16));
-            byte[] Key = Encoding.ASCII.GetBytes(AppRuntimeKey);
+            byte[] Key = Encoding.ASCII.GetBytes(ResizeString(AppRuntimeKey, 16));
             byte[] Data = StringToByteArray(CipherText);
 
             Aes aes = Aes.Create();

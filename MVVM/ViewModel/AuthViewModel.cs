@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using static Account_Manager.Consts;
 
 namespace Account_Manager.MVVM.ViewModel
 {
@@ -28,7 +29,10 @@ namespace Account_Manager.MVVM.ViewModel
 
             NavigateHome = new ExecuteOnlyCommand((_) => {
                 if (EnterPassword != null && _ServiceCollection.GetCryptoService().CheckValidPassword(EnterPassword))
+                {
                     _ServiceCollection.GetNavService().Navigate(new HomeViewModel(_ServiceCollection));
+                    _ServiceCollection.GetCryptoService().SetAppRuntimeKey(AppInfo.APPKEY, EnterPassword);
+                }
                 else
                     MessageBox.Show("Authentication Failed", "Unauthorized");
             });

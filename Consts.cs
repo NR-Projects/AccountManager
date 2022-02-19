@@ -8,7 +8,7 @@ namespace Account_Manager
 {
     public class Consts
     {
-        public class App
+        public class AppInfo
         {
             public const string VERSION = "v1.0.0";
             public const string APPKEY = "337589be032e8875ea5a452b6ee6a3f2606a7cf43b4ef57745a2fc0c528c49a6";

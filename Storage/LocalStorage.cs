@@ -18,6 +18,10 @@ namespace Account_Manager.Storage
         public LocalStorage(CryptoService cryptoService)
         {
             _CryptoService = cryptoService;
+
+            // Initialize File Contents
+            SetData(DataType.ACCOUNT, "[]", FileWriteType.Write);
+            SetData(DataType.SITE, "[]", FileWriteType.Write);
         }
 
         private enum FileWriteType { Write, Append, Clear }
