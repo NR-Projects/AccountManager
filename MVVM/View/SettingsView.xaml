@@ -84,7 +84,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
                             <ComboBoxItem>All</ComboBoxItem>
-                            <ComboBoxItem>Account</ComboBoxItem>
+                            <ComboBoxItem>Accounts</ComboBoxItem>
                             <ComboBoxItem>Sites</ComboBoxItem>
                         </ComboBox>
                         <Button

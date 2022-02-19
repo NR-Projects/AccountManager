@@ -27,6 +27,17 @@ namespace Account_Manager.Services
             AppRuntimeKey = "";
         }
 
+        public void ReInitialize()
+        {
+            AuthModel authModel = DataService.GetAuthData();
+            if (authModel != null && authModel.UserKey != null && authModel.HashedPassword != null)
+            {
+                UserKey = authModel.UserKey;
+                AppHashedPassword = authModel.HashedPassword;
+            }
+            AppRuntimeKey = "";
+        }
+
         public string GenerateKey()
         {
             return GenerateRandomString(16);

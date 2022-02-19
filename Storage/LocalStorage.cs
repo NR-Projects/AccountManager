@@ -64,18 +64,19 @@ namespace Account_Manager.Storage
             }
         }
 
-        public bool UpdateDataEncryption(string Key, string SecureNewPassword)
+        public bool UpdateDataEncryption(string NewKey, string NewRawPassword)
         {
             try
             {
                 List<AccountModel>? AccountDataList = JsonSerializer.Deserialize<List<AccountModel>>(GetData(DataType.ACCOUNT));
                 List<SiteModel>? SiteDataList = JsonSerializer.Deserialize<List<SiteModel>>(GetData(DataType.SITE));
 
+                SetAuthData(NewKey, _CryptoService.HashPassword(NewRawPassword, NewKey));
+                _CryptoService.SetAppRuntimeKey(AppInfo.APPKEY, NewRawPassword);
+
                 // Set and Get Auth Data
                 if (AccountDataList != null || SiteDataList != null)
                 {
-                    SetAuthData(Key, SecureNewPassword);
-
                     SetData("", DataType.ACCOUNT, FileWriteType.Clear);
                     SetData("", DataType.SITE, FileWriteType.Clear);
 
@@ -84,6 +85,8 @@ namespace Account_Manager.Storage
                 }
                 else
                     return false;
+
+                _CryptoService.ReInitialize();
 
                 return true;
             }

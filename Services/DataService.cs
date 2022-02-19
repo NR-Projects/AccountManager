@@ -107,9 +107,9 @@ namespace Account_Manager.Services
             return LocalStorage.GetAuthData();
         }
 
-        public bool UpdateEncryption(string Key, string SecureNewPassword)
+        public bool UpdateEncryption(string NewKey, string NewRawPassword)
         {
-            return _LocalStorage.UpdateDataEncryption(Key, SecureNewPassword);
+            return _LocalStorage.UpdateDataEncryption(NewKey, NewRawPassword);
         }
     }
 }
