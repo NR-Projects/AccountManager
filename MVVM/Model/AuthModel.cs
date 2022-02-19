@@ -33,5 +33,10 @@ namespace Account_Manager.MVVM.Model
                 return false;
             }
         }
+
+        public override string ToString()
+        {
+            return $"{UserKey} | {HashedPassword}";
+        }
     }
 }
