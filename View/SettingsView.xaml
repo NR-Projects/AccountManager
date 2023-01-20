@@ -79,7 +79,7 @@
                             FontSize="12"
                             Margin="10, 15" />
                         <ComboBox
-                            SelectedItem="{Binding ExportDataTypeStr}"
+                            SelectedItem="{Binding ExportDataTypeCB}"
                             SelectedIndex="0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center">
@@ -88,7 +88,7 @@
                             <ComboBoxItem>Sites</ComboBoxItem>
                         </ComboBox>
                         <Button
-                            Content="Update Password"
+                            Content="Export Data"
                             FontSize="10"
                             Padding="10,5,10,5"
                             Command="{Binding ExportData}"

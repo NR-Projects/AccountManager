@@ -2,9 +2,12 @@
 using AccountManager.Model;
 using AccountManager.Service;
 using Microsoft.Win32;
+using System;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using static AccountManager.Consts;
 
@@ -17,7 +20,7 @@ namespace AccountManager.ViewModel
         public ICommand? NavigateBackHome { get; set; }
         public string? ChangedPasswordStr { get; set; }
         public ICommand? UpdatePassword { get; set; }
-        public string? ExportDataTypeStr { get; set; }
+        public ComboBoxItem? ExportDataTypeCB { get; set; }
         public ICommand? ExportData { get; set; }
 
         public SettingsViewModel(ServiceCollection serviceCollection) : base(serviceCollection)
@@ -49,17 +52,16 @@ namespace AccountManager.ViewModel
             });
 
             ExportData = new ExecuteOnlyCommand((_) => {
-                /*
-                if (ExportDataTypeStr == null || ExportDataTypeStr.Trim() == "")
+
+                string? ExportDataTypeStr = null;
+
+                if (ExportDataTypeCB == null)
                 {
                     MessageBox.Show("No DataType Selected");
                     return;
                 }
 
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-                if (saveFileDialog.ShowDialog() != true)
-                    return;
+                ExportDataTypeStr = ExportDataTypeCB.Content.ToString();
 
                 string FinalJson = "";
                 switch (ExportDataTypeStr)
@@ -88,12 +90,33 @@ namespace AccountManager.ViewModel
                         break;
                 }
 
-                if (saveFileDialog.FileName.Trim() != "" && FinalJson != "")
-                    File.WriteAllText(saveFileDialog.FileName, FinalJson);
-
-                MessageBox.Show("Data Saved");
-                */
+                string res_str = "";
+                bool res = ExportFileData(FinalJson, ExportDataTypeStr);
+                if (res) res_str += "Data Saved";
+                else res_str += "Something Unexpected Occurred";
+                MessageBox.Show(res_str);
             });
+        }
+
+        private bool ExportFileData(string Data, string Title)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "All files|*.*|Text File|*.txt|JSON File|*.json";
+            saveFileDialog1.DefaultExt = "txt";
+            saveFileDialog1.Title = "Save " + Title;
+            saveFileDialog1.ShowDialog();
+
+            // If the file name is not an empty string open it for saving.
+            if (saveFileDialog1.FileName != "")
+            {
+                FileStream fs = (FileStream)saveFileDialog1.OpenFile();
+                byte[] info = new UTF8Encoding(true).GetBytes(Data);
+                fs.Write(info, 0, info.Length);
+                fs.Close();
+                return true;
+            }
+
+            return false;
         }
     }
 }
