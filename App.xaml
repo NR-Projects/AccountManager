@@ -1,7 +1,7 @@
-﻿<Application x:Class="Account_Manager.App"
+﻿<Application x:Class="AccountManager.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Account_Manager"
+             xmlns:local="clr-namespace:AccountManager"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

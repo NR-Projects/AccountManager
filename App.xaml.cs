@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Account_Manager
+namespace AccountManager
 {
     /// <summary>
     /// Interaction logic for App.xaml

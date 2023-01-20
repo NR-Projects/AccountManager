@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="AccountManager.View.ShowSiteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AccountManager.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="600">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resource/MainResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.10*" />
+            <RowDefinition Height="0.90*" />
+        </Grid.RowDefinitions>
+
+        <Button
+            Grid.Row="0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Content="{StaticResource Back-Icon}"
+            Command="{Binding NavigateBackHome}"
+            Background="Transparent"
+            BorderBrush="Transparent" Margin="5,5,0,0"
+            />
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.25*" />
+                <ColumnDefinition Width="0.75*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid
+                Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <StackPanel
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Button
+                        Content="Reload Sites"
+                        Command="{Binding ReloadSites}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Padding="8,3,8,3"
+                        Margin="0,10"/>
+                    <Button
+                        Content="Modify Sites"
+                        Command="{Binding NavigateModifySite}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Padding="8,3,8,3"
+                        Margin="0,10"/>
+                </StackPanel>
+            </Grid>
+
+            <DataGrid
+                Grid.Column="1"
+                Margin="10"
+                CanUserAddRows="False"
+                AutoGenerateColumns="False"
+                ItemsSource="{Binding SiteCollection}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding Label}"
+                        Header="Label"
+                        Width="0.20*" />
+                    <DataGridTextColumn
+                        Binding="{Binding Link}"
+                        Header="Link"
+                        Width="0.20*" />
+                    <DataGridTextColumn
+                        Binding="{Binding Description}"
+                        Header="Description"
+                        Width="0.20*" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </Grid>
+
+    </Grid>
+</UserControl>

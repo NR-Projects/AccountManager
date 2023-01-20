@@ -1,100 +1,31 @@
-﻿using Account_Manager.MVVM.Model;
-using Account_Manager.Services;
+﻿using AccountManager.Model;
+using AccountManager.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
-using static Account_Manager.Consts;
+using static AccountManager.Consts;
 
-namespace Account_Manager.Storage
+namespace AccountManager.Storage
 {
     public class LocalStorage
     {
         private CryptoService _CryptoService;
-
-        public LocalStorage(CryptoService cryptoService)
-        {
-            _CryptoService = cryptoService;
-
-            // Initialize File Contents
-            if (GetData(DataType.ACCOUNT).Length == 0)
-                SetData(DataType.ACCOUNT, "[]", FileWriteType.Write);
-            if (GetData(DataType.SITE).Length == 0)
-                SetData(DataType.SITE, "[]", FileWriteType.Write);
-        }
-
         private enum FileWriteType { Write, Append, Clear }
 
-        public static bool SetAuthData(string UserKey, string HashedPassword)
+        public LocalStorage()
         {
-            try
-            {
-                AuthModel appAuthModel = new AuthModel
-                {
-                    UserKey = UserKey,
-                    HashedPassword = HashedPassword
-                };
-
-                File.WriteAllText(GetFilePathFromDataType(DataType.AUTH), JsonSerializer.Serialize(appAuthModel));
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
-                return false;
-            }
-        }
-        public static AuthModel GetAuthData()
-        {
-            try
-            {
-                string FileData = File.ReadAllText(GetFilePathFromDataType(DataType.AUTH));
-                AuthModel? authModel =  JsonSerializer.Deserialize<AuthModel>(FileData);
-                if (authModel == null)
-                    throw new NullReferenceException();
-                return authModel;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
-                return new AuthModel();
-            }
+            _CryptoService = CryptoService.GetPrivService();
+            GenerateLocalFileContents();
         }
 
-        public bool UpdateDataEncryption(string NewKey, string NewRawPassword)
+        public void GenerateLocalFileContents()
         {
-            try
-            {
-                List<AccountModel>? AccountDataList = JsonSerializer.Deserialize<List<AccountModel>>(GetData(DataType.ACCOUNT));
-                List<SiteModel>? SiteDataList = JsonSerializer.Deserialize<List<SiteModel>>(GetData(DataType.SITE));
-
-                SetAuthData(NewKey, _CryptoService.HashPassword(NewRawPassword, NewKey));
-                _CryptoService.SetAppRuntimeKey(AppInfo.APPKEY, NewRawPassword);
-
-                // Set and Get Auth Data
-                if (AccountDataList != null || SiteDataList != null)
-                {
-                    SetData("", DataType.ACCOUNT, FileWriteType.Clear);
-                    SetData("", DataType.SITE, FileWriteType.Clear);
-
-                    SetData(JsonSerializer.Serialize(AccountDataList), DataType.ACCOUNT, FileWriteType.Append);
-                    SetData(JsonSerializer.Serialize(SiteDataList), DataType.SITE, FileWriteType.Append);
-                }
-                else
-                    return false;
-
-                _CryptoService.ReInitialize();
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
-                return false;
-            }
+            // Initialize File Contents
+            if (ReadDataFromFile(DataType.ACCOUNT).Length == 0)
+                WriteDataToFile(DataType.ACCOUNT, FileWriteType.Write, "[]");
+            if (ReadDataFromFile(DataType.SITE).Length == 0)
+                WriteDataToFile(DataType.SITE, FileWriteType.Write, "[]");
         }
 
         public bool CreateLocalData<T>(string _DataType, T NewData)
@@ -102,7 +33,7 @@ namespace Account_Manager.Storage
             try
             {
                 // Pull Data List
-                List<T>? DataList = JsonSerializer.Deserialize<List<T>>(GetData(_DataType));
+                List<T>? DataList = JsonSerializer.Deserialize<List<T>>(ReadDataFromFile(_DataType));
 
                 // Add New Data
                 if (DataList != null && NewData != null)
@@ -111,7 +42,7 @@ namespace Account_Manager.Storage
                     throw new NullReferenceException();
 
                 // Put Back Data List
-                return SetData(_DataType, JsonSerializer.Serialize(DataList), FileWriteType.Write);
+                return WriteDataToFile(_DataType, FileWriteType.Write, JsonSerializer.Serialize(DataList));
             }
             catch (Exception ex)
             {
@@ -123,9 +54,9 @@ namespace Account_Manager.Storage
         {
             try
             {
-                List<T>? Data = JsonSerializer.Deserialize<List<T>>(GetData(_DataType));
+                List<T>? Data = JsonSerializer.Deserialize<List<T>>(ReadDataFromFile(_DataType));
 
-                if(Data != null)
+                if (Data != null)
                     return Data;
                 throw new NullReferenceException();
             }
@@ -140,7 +71,7 @@ namespace Account_Manager.Storage
             try
             {
                 // Pull Data List
-                List<T>? DataList = JsonSerializer.Deserialize<List<T>>(GetData(_DataType));
+                List<T>? DataList = JsonSerializer.Deserialize<List<T>>(ReadDataFromFile(_DataType));
 
                 if (DataList != null)
                 {
@@ -158,7 +89,7 @@ namespace Account_Manager.Storage
                 else
                     throw new NullReferenceException();
 
-                return SetData(_DataType, JsonSerializer.Serialize(DataList), FileWriteType.Write);
+                return WriteDataToFile(_DataType, FileWriteType.Write, JsonSerializer.Serialize(DataList));
             }
             catch (Exception ex)
             {
@@ -171,7 +102,7 @@ namespace Account_Manager.Storage
             try
             {
                 // Pull Data List
-                List<T>? DataList = JsonSerializer.Deserialize<List<T>>(GetData(_DataType));
+                List<T>? DataList = JsonSerializer.Deserialize<List<T>>(ReadDataFromFile(_DataType));
 
                 if (DataList != null)
                 {
@@ -189,7 +120,7 @@ namespace Account_Manager.Storage
                 else
                     throw new NullReferenceException();
 
-                return SetData(_DataType, JsonSerializer.Serialize(DataList), FileWriteType.Write);
+                return WriteDataToFile(_DataType, FileWriteType.Write, JsonSerializer.Serialize(DataList));
             }
             catch (Exception ex)
             {
@@ -212,11 +143,11 @@ namespace Account_Manager.Storage
             return "";
         }
 
-        private bool SetData(string _Type, string _Data, FileWriteType _FileWriteType)
+        private bool WriteDataToFile(string _Type, FileWriteType _FileWriteType, string _Data = "")
         {
             try
             {
-                _Data = _CryptoService.Encrypt(_Data);
+                _Data = _CryptoService.EncryptData(_Data);
 
                 switch (_FileWriteType)
                 {
@@ -227,7 +158,7 @@ namespace Account_Manager.Storage
                         File.WriteAllText(GetFilePathFromDataType(_Type), _Data);
                         break;
                     case FileWriteType.Clear:
-                        File.WriteAllText(GetFilePathFromDataType(_Type), "");
+                        File.WriteAllText(GetFilePathFromDataType(_Type), string.Empty);
                         break;
                 }
 
@@ -240,18 +171,89 @@ namespace Account_Manager.Storage
             }
         }
 
-        private string GetData(string _Type)
+        private string ReadDataFromFile(string _Type)
         {
             try
             {
                 string FileData = File.ReadAllText(GetFilePathFromDataType(_Type));
-                FileData = _CryptoService.Decrypt(FileData);
+                FileData = _CryptoService.DecryptData(FileData);
                 return FileData;
             }
             catch (Exception ex)
             {
                 Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
                 return "";
+            }
+        }
+
+
+
+        // Auth-Related
+
+        public static bool SetAuthData(string Salt, string HashedPassword)
+        {
+            try
+            {
+                AuthModel appAuthModel = new AuthModel
+                {
+                    UserGenSalt = Salt,
+                    HashedPass = HashedPassword
+                };
+
+                File.WriteAllText(GetFilePathFromDataType(DataType.AUTH), JsonSerializer.Serialize(appAuthModel));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
+                return false;
+            }
+        }
+        public static AuthModel GetAuthData()
+        {
+            try
+            {
+                string FileData = File.ReadAllText(GetFilePathFromDataType(DataType.AUTH));
+                AuthModel? authModel = JsonSerializer.Deserialize<AuthModel>(FileData);
+                if (authModel == null)
+                    throw new NullReferenceException();
+                return authModel;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
+                return new AuthModel();
+            }
+        }
+
+        public bool UpdateDataEncryption(string NewSalt, string NewPass)
+        {
+            try
+            {
+                List<AccountModel>? AccountDataList = JsonSerializer.Deserialize<List<AccountModel>>(ReadDataFromFile(DataType.ACCOUNT));
+                List<SiteModel>? SiteDataList = JsonSerializer.Deserialize<List<SiteModel>>(ReadDataFromFile(DataType.SITE));
+
+                string NewHashedPass = _CryptoService.HashPassword(NewPass, NewSalt);
+                SetAuthData(NewSalt, NewHashedPass);
+
+                // Clear File Contents
+                WriteDataToFile(DataType.ACCOUNT, FileWriteType.Clear);
+                WriteDataToFile(DataType.SITE, FileWriteType.Clear);
+
+                // ReInitialize CryptoService before writing
+                _CryptoService.ReInitialize();
+                _CryptoService.SetAccessKey(NewPass);
+
+                // Write Data To File
+                WriteDataToFile(DataType.ACCOUNT, FileWriteType.Write, JsonSerializer.Serialize(AccountDataList));
+                WriteDataToFile(DataType.SITE, FileWriteType.Write, JsonSerializer.Serialize(SiteDataList));
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.LogToFile(PropertyType.STORAGE, $"{ex.Message} >> {ex.StackTrace}");
+                return false;
             }
         }
     }

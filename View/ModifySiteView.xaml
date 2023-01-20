@@ -1,0 +1,242 @@
+﻿<UserControl x:Class="AccountManager.View.ModifySiteView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AccountManager.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="600">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resource/MainResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.10*" />
+            <RowDefinition Height="0.90*" />
+        </Grid.RowDefinitions>
+        <Button
+            Grid.Row="0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            Content="{StaticResource Back-Icon}"
+            Command="{Binding NavigateBackSites}"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            Margin="5,5,0,0"
+            />
+        <Grid Grid.Row="1">
+            <TabControl>
+                <TabItem
+                    Header="Add New Sites">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.20*" />
+                            <RowDefinition Height="0.20*" />
+                            <RowDefinition Height="0.20*" />
+                            <RowDefinition Height="0.20*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel
+                            Grid.Row="0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <Label
+                                Content="Label: "
+                                Margin="0,0,20,0" />
+                            <TextBox
+                                Text="{Binding AddSiteLabel}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Width="150"/>
+                        </StackPanel>
+
+                        <StackPanel
+                            Grid.Row="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <Label
+                                Content="Link: "
+                                Margin="0,0,20,0" />
+                            <TextBox
+                                Text="{Binding AddSiteLink}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Width="150"/>
+                        </StackPanel>
+
+                        <StackPanel
+                            Grid.Row="2"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                            <Label
+                                Content="Description: "
+                                Margin="0,0,20,0" />
+                            <TextBox
+                                Text="{Binding AddSiteDescription}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Width="150"/>
+                        </StackPanel>
+
+                        <Button
+                            Grid.Row="3"
+                            Content="Add"
+                            Command="{Binding AddSite}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Padding="10,5,10,5"/>
+
+                    </Grid>
+                </TabItem>
+                <TabItem
+                    Header="Delete Existing Sites">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel
+                                Grid.Row="0"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                <Label
+                                    Content="Label: "
+                                    Margin="0,0,20,0" />
+                                <ComboBox
+                                    ItemsSource="{Binding LabelCollection}"
+                                    SelectedItem="{Binding DeleteSiteLabel}"/>
+                            </StackPanel>
+
+                            <Button
+                                Grid.Row="1"
+                                Content="Delete"
+                                Command="{Binding DeleteSite}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Padding="10,5,10,5"/>
+
+                        </Grid>
+
+                        <ScrollViewer
+                            Grid.Row="1">
+                            <TextBlock
+                                TextWrapping="Wrap"
+                                Text="{Binding DeleteSiteDisplay}"/>
+                        </ScrollViewer>
+
+                    </Grid>
+                </TabItem>
+                <TabItem
+                    Header="Update Existing Sites">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel
+                                Grid.Row="1"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                <Label
+                                    Content="Label: "
+                                    Margin="0,0,20,0" />
+                                <ComboBox
+                                    ItemsSource="{Binding LabelCollection}"
+                                    SelectedItem="{Binding UpdateShowSiteLabel}"/>
+                            </StackPanel>
+
+                        </Grid>
+
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="0.20*" />
+                                <RowDefinition Height="0.20*" />
+                                <RowDefinition Height="0.20*" />
+                                <RowDefinition Height="0.20*" />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel
+                                Grid.Row="0"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                <Label
+                                    Content="Label: "
+                                    Margin="0,0,20,0" />
+                                <TextBox
+                                    Text="{Binding UpdateSiteLabel}"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Width="150"/>
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Row="1"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                <Label
+                                    Content="Link: "
+                                    Margin="0,0,20,0" />
+                                <TextBox
+                                    Text="{Binding UpdateSiteLink}"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Width="150"/>
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.Row="2"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                                <Label
+                                    Content="Description: "
+                                    Margin="0,0,20,0" />
+                                <TextBox
+                                    Text="{Binding UpdateSiteDescription}"
+                                    HorizontalContentAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    Width="150"/>
+                            </StackPanel>
+
+                            <Button
+                                Grid.Row="3"
+                                Content="Update"
+                                Command="{Binding UpdateSite}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Padding="10,5,10,5"/>
+
+                        </Grid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</UserControl>
