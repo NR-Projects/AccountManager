@@ -9,7 +9,7 @@
 
         public class Files
         {
-            public const string BASE_PATH = "C:\\TunaSalmon\\Account_Manager\\";
+            public const string BASE_PATH = "C:\\TunaSalmon\\AccountManager\\";
             public const string APP_INFO_PATH = BASE_PATH + "AppData.app";
             public const string TOOLS_PATH = BASE_PATH + "Tools\\";
             public const string AUTHENTICATION_PATH = TOOLS_PATH + "AppAuth.auth";

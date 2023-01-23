@@ -334,7 +334,7 @@ namespace AccountManager.ViewModel
 
 
 
-        private void OnUpdateSiteSelected()
+        private void OnUpdateLabelSelected()
         {
             AccountModel _UpdateAccountData = new AccountModel
             {
@@ -357,14 +357,9 @@ namespace AccountManager.ViewModel
                     break;
                 }
             }
-
-            UpdateAccountLabel = "";
-            UpdateAccountSite = "";
-            UpdateAccountUsername = "";
-            UpdateAccountPassword = "";
         }
 
-        private void OnUpdateLabelSelected()
+        private void OnUpdateSiteSelected()
         {
             // Update Labels
             if (LabelCollection == null)
@@ -382,6 +377,11 @@ namespace AccountManager.ViewModel
             }
 
             UpdateShowAccountLabel = "";
+
+            UpdateAccountLabel = "";
+            UpdateAccountSite = "";
+            UpdateAccountUsername = "";
+            UpdateAccountPassword = "";
         }
     }
 }
