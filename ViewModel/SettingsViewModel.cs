@@ -2,9 +2,8 @@
 using AccountManager.Model;
 using AccountManager.Service;
 using Microsoft.Win32;
-using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,8 +17,13 @@ namespace AccountManager.ViewModel
         public override string ViewName => "Settings";
 
         public ICommand? NavigateBackHome { get; set; }
+
         public string? ChangedPasswordStr { get; set; }
         public ICommand? UpdatePassword { get; set; }
+
+        public ComboBoxItem? ImportDataTypeCB { get; set; }
+        public ICommand? ImportData { get; set; }
+
         public ComboBoxItem? ExportDataTypeCB { get; set; }
         public ICommand? ExportData { get; set; }
 
@@ -49,6 +53,25 @@ namespace AccountManager.ViewModel
                 MessageBox.Show("Password Updated, Please remember your new password", "Settings Update");
 
                 _ServiceCollection.GetNavService().Navigate(new AuthViewModel(_ServiceCollection));
+            });
+
+            ImportData = new ExecuteOnlyCommand((_) => {
+
+                string? ImportDataTypeStr = null;
+
+                if (ImportDataTypeCB == null)
+                {
+                    MessageBox.Show("No DataType Selected");
+                    return;
+                }
+
+                ImportDataTypeStr = ImportDataTypeCB.Content.ToString();
+
+                string res_str = "";
+                bool res = ImportFileData(ImportDataTypeStr!);
+                if (res) res_str += "Data Pulled";
+                else res_str += "Something Unexpected Occurred";
+                MessageBox.Show(res_str);
             });
 
             ExportData = new ExecuteOnlyCommand((_) => {
@@ -91,11 +114,42 @@ namespace AccountManager.ViewModel
                 }
 
                 string res_str = "";
-                bool res = ExportFileData(FinalJson, ExportDataTypeStr);
+                bool res = ExportFileData(FinalJson, ExportDataTypeStr!);
                 if (res) res_str += "Data Saved";
                 else res_str += "Something Unexpected Occurred";
                 MessageBox.Show(res_str);
             });
+        }
+
+        private bool ImportFileData(string Type)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            openFileDialog1.Filter = "All files|*.*|Text File|*.txt|JSON File|*.json";
+            openFileDialog1.DefaultExt = "txt";
+            openFileDialog1.Title = "Open " + Type;
+            openFileDialog1.ShowDialog();
+
+            // If the file name is not an empty string open it for reading.
+            if (openFileDialog1.FileName != "")
+            {
+                FileStream fs = (FileStream)openFileDialog1.OpenFile();
+                using (StreamReader reader = new StreamReader(fs))
+                {
+                    string? line = reader.ReadLine();
+
+                    if (line == null)
+                    {
+                        return false;
+                    }
+
+                    // Reset Content
+                    if (Type.Equals("Accounts")) _ServiceCollection.GetDataService().ReSet_Data(line, DataType.ACCOUNT);
+                    else if (Type.Equals("Sites")) _ServiceCollection.GetDataService().ReSet_Data(line, DataType.SITE);
+                }
+                return true;
+            }
+
+            return false;
         }
 
         private bool ExportFileData(string Data, string Title)
@@ -110,9 +164,10 @@ namespace AccountManager.ViewModel
             if (saveFileDialog1.FileName != "")
             {
                 FileStream fs = (FileStream)saveFileDialog1.OpenFile();
-                byte[] info = new UTF8Encoding(true).GetBytes(Data);
-                fs.Write(info, 0, info.Length);
-                fs.Close();
+                using (StreamWriter writer = new StreamWriter(fs))
+                {
+                    writer.Write(Data);
+                }
                 return true;
             }
 

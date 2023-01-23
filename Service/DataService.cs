@@ -94,6 +94,14 @@ namespace AccountManager.Service
         }
 
 
+        
+        // Local
+        public bool ReSet_Data(string _NewData, string _Type)
+        {
+            return _LocalStorage.ReSetData(_NewData, _Type);
+        }
+
+
 
         // Auth-Related
 

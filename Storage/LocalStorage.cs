@@ -129,6 +129,19 @@ namespace AccountManager.Storage
             }
         }
 
+        public bool ReSetData(string _Data, string _Type)
+        {
+            switch (_Type)
+            {
+                case DataType.ACCOUNT:
+                    return WriteDataToFile(DataType.ACCOUNT, FileWriteType.Write, _Data);
+                case DataType.SITE:
+                    return WriteDataToFile(DataType.SITE, FileWriteType.Write, _Data);
+            }
+
+            return false;
+        }
+
         private static string GetFilePathFromDataType(string _DataType)
         {
             switch (_DataType)
