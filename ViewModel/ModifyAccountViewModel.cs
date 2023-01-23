@@ -88,10 +88,17 @@ namespace AccountManager.ViewModel
 
     public partial class ModifyAccountViewModel : ViewModelBase
     {
-        public string? AddAccountLabel { get; set; }
+        public string? AddAccountLabel { get => _AddAccountLabel; set => SetProperty(ref _AddAccountLabel, value); }
+        private string? _AddAccountLabel;
+
         public string? AddAccountSite { get; set; }
-        public string? AddAccountUsername { get; set; }
-        public string? AddAccountPassword { get; set; }
+
+        public string? AddAccountUsername { get => _AddAccountUsername; set => SetProperty(ref _AddAccountUsername, value); }
+        private string? _AddAccountUsername;
+
+        public string? AddAccountPassword { get => _AddAccountPassword; set => SetProperty(ref _AddAccountPassword, value); }
+        private string? _AddAccountPassword;
+
         public ICommand? AddAccount { get; set; }
 
         private void InitializeAddButtons()
@@ -129,10 +136,10 @@ namespace AccountManager.ViewModel
 
                 InitializeBaseProperties();
 
-                AddAccountLabel = "";
-                AddAccountSite = "";
-                AddAccountUsername = "";
-                AddAccountPassword = "";
+                AddAccountLabel = string.Empty;
+                AddAccountSite = string.Empty;
+                AddAccountUsername = string.Empty;
+                AddAccountPassword = string.Empty;
             });
         }
 

@@ -69,9 +69,15 @@ namespace AccountManager.ViewModel
 
     public partial class ModifySiteViewModel : ViewModelBase
     {
-        public string? AddSiteLabel { get; set; }
-        public string? AddSiteLink { get; set; }
-        public string? AddSiteDescription { get; set; }
+        public string? AddSiteLabel { get => _AddSiteLabel; set => SetProperty(ref _AddSiteLabel, value); }
+        private string? _AddSiteLabel;
+
+        public string? AddSiteLink { get => _AddSiteLink; set => SetProperty(ref _AddSiteLink, value); }
+        private string? _AddSiteLink;
+
+        public string? AddSiteDescription { get => _AddSiteDescription; set => SetProperty(ref _AddSiteDescription, value); }
+        private string? _AddSiteDescription;
+
         public ICommand? AddSite { get; set; }
 
         private void InitializeAddButtons()
