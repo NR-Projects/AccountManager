@@ -94,10 +94,24 @@
                         Binding="{Binding Username}"
                         Header="Username"
                         Width="*" />
-                    <DataGridTextColumn
-                        Binding="{Binding Password}"
+                    <DataGridTemplateColumn
                         Header="Password"
-                        Width="*" />
+                        Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Button
+                                        Content="Show Passwd"
+                                        Command="{Binding DataContext.ShowPasswdAction, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding}" />
+                                    <Button
+                                        Content="Copy Passwd"
+                                        Command="{Binding DataContext.CopyPasswdAction, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

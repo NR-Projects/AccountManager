@@ -1,8 +1,10 @@
 ﻿using AccountManager.Command;
 using AccountManager.Model;
 using AccountManager.Service;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 using static AccountManager.Consts;
 
@@ -15,6 +17,12 @@ namespace AccountManager.ViewModel
         public ICommand? NavigateBackHome { get; set; }
         public ICommand? NavigateModifyAccount { get; set; }
         public ICommand? ReloadAccounts { get; set; }
+
+
+        public ICommand ShowPasswdAction { get; set; }
+        public ICommand CopyPasswdAction { get; set; }
+
+
 
         public ObservableCollection<AccountModel>? AccountCollection { get => _FilteredAccountCollection; set => SetProperty(ref _FilteredAccountCollection, value); }
         public ObservableCollection<string>? SiteCollection { get => _SiteCollection; set => SetProperty(ref _SiteCollection, value); }
@@ -54,6 +62,23 @@ namespace AccountManager.ViewModel
 
             NavigateModifyAccount = new ExecuteOnlyCommand((_) => { 
                 _ServiceCollection.GetNavService().Navigate(new ModifyAccountViewModel(_ServiceCollection));
+            });
+
+            ShowPasswdAction = new ExecuteOnlyCommand((row_info) => {
+                AccountModel account_row_info = (AccountModel)row_info;
+
+                if (account_row_info != null) {
+                    MessageBox.Show($"Password is: {account_row_info.Password}", "Show Password");
+                }
+            });
+
+            CopyPasswdAction = new ExecuteOnlyCommand((row_info) => {
+                AccountModel account_row_info = (AccountModel)row_info;
+
+                if (account_row_info != null)
+                {
+                    Clipboard.SetData(DataFormats.Text, account_row_info.Password);
+                }
             });
         }
 
