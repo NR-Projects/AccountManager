@@ -68,7 +68,7 @@ namespace AccountManager.ViewModel
                 AccountModel account_row_info = (AccountModel)row_info;
 
                 if (account_row_info != null) {
-                    MessageBox.Show($"Password is: {account_row_info.Password}", "Show Password");
+                    MessageBox.Show($"Password is: {account_row_info.Password}", $"Show Password for {account_row_info.Username}");
                 }
             });
 
@@ -78,6 +78,7 @@ namespace AccountManager.ViewModel
                 if (account_row_info != null)
                 {
                     Clipboard.SetData(DataFormats.Text, account_row_info.Password);
+                    MessageBox.Show("Password successfully copied to clipboard", $"{account_row_info.Username}'s Password");
                 }
             });
         }
