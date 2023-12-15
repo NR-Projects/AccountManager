@@ -23,7 +23,6 @@ namespace AccountManager.ViewModel
         public ICommand CopyPasswdAction { get; set; }
 
 
-
         public ObservableCollection<AccountModel>? AccountCollection { get => _FilteredAccountCollection; set => SetProperty(ref _FilteredAccountCollection, value); }
         public ObservableCollection<string>? SiteCollection { get => _SiteCollection; set => SetProperty(ref _SiteCollection, value); }
         public string? CurrentSiteSelected
@@ -38,7 +37,7 @@ namespace AccountManager.ViewModel
             set
             {
                 SetProperty(ref _CurrentSiteSelected, value);
-                OnCurrentSiteChanged();
+                ApplyFilter();
             }
         }
 
@@ -47,6 +46,28 @@ namespace AccountManager.ViewModel
         private ObservableCollection<string>? _SiteCollection;
         private string? _CurrentSiteSelected;
 
+        // Added Filter
+        public ObservableCollection<string> AccountMetadataCollection { get => _AccountMetadataCollection; set => SetProperty(ref _AccountMetadataCollection, value); }
+        public string? AccountInfoFilter
+        {
+            get => _AccountInfoFilter;
+            set {
+                SetProperty(ref _AccountInfoFilter, value);
+                ApplyFilter();
+            }
+        }
+        public string? CurrentAccountMetadataSelected
+        {
+            get => _CurrentAccountMetadataSelected;
+            set {
+                SetProperty(ref _CurrentAccountMetadataSelected, value);
+                ApplyFilter();
+            }
+        }
+
+        private ObservableCollection<string> _AccountMetadataCollection;
+        private string? _AccountInfoFilter;
+        private string? _CurrentAccountMetadataSelected;
 
         public ShowAccountViewModel(ServiceCollection serviceCollection) : base(serviceCollection)
         {
@@ -88,8 +109,10 @@ namespace AccountManager.ViewModel
             base.InitializeProperties();
 
             // Add Site Collection
-            _SiteCollection = new ObservableCollection<string>();
-            _SiteCollection.Add("All");
+            _SiteCollection = new ObservableCollection<string>
+            {
+                "All"
+            };
 
             List<SiteModel> SiteList = _ServiceCollection.GetDataService().Read_Data<SiteModel>(DataType.SITE, DataService.DataSource.Local);
             foreach (SiteModel site in SiteList)
@@ -103,26 +126,42 @@ namespace AccountManager.ViewModel
             // Add Account Collection
             _UnfilteredAccountCollection = new ObservableCollection<AccountModel>(_ServiceCollection.GetDataService().Read_Data<AccountModel>(DataType.ACCOUNT, DataService.DataSource.Local));
             _FilteredAccountCollection = new ObservableCollection<AccountModel>(_UnfilteredAccountCollection);
+
+            // Add AccountMetadata Collection
+            AccountMetadataCollection = new ObservableCollection<string>
+            {
+                "Label",
+                "Username"
+            };
         }
 
-        private void OnCurrentSiteChanged()
+        private void ApplyFilter()
         {
-            if (CurrentSiteSelected != null && AccountCollection != null && _UnfilteredAccountCollection != null)
-            {
-                if (CurrentSiteSelected.Equals("All"))
-                {
-                    AccountCollection = new ObservableCollection<AccountModel>(_UnfilteredAccountCollection);
-                }
-                else
-                {
-                    AccountCollection.Clear();
+            // Filter for Site and specifics (Label or Username)
+            if (CurrentSiteSelected == null || AccountCollection == null || _UnfilteredAccountCollection == null) return;
+            if (CurrentAccountMetadataSelected == null) CurrentAccountMetadataSelected = "";
+            if (AccountInfoFilter == null) AccountInfoFilter = "";
 
-                    foreach (AccountModel Account in _UnfilteredAccountCollection)
-                    {
-                        if (Account.Site != null && Account.Site.Contains(CurrentSiteSelected))
-                            AccountCollection.Add(Account);
-                    }
-                }
+            AccountCollection.Clear();
+
+            foreach (AccountModel Account in _UnfilteredAccountCollection)
+            {
+                // Site Filter
+                if (!CurrentSiteSelected.Equals("All"))
+                    if (Account.Site == null || !Account.Site.Contains(CurrentSiteSelected))
+                        continue;
+
+                // Label Filter (If enabled)
+                if (CurrentAccountMetadataSelected.Equals("Label"))
+                    if (Account.Label == null || !Account.Label.Contains(AccountInfoFilter))
+                        continue;
+
+                // Username Filter (If enabled)
+                if (CurrentAccountMetadataSelected.Equals("Username"))
+                    if (Account.Username == null || !Account.Username.Contains(AccountInfoFilter))
+                        continue;
+
+                AccountCollection.Add(Account);
             }
         }
     }

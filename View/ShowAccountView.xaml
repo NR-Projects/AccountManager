@@ -75,45 +75,72 @@
                         Margin="0,10"/>
                 </StackPanel>
             </Grid>
-            <DataGrid
-                Grid.Column="1"
-                Margin="10"
-                CanUserAddRows="False"
-                AutoGenerateColumns="False"
-                ItemsSource="{Binding AccountCollection}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding Site}"
-                        Header="Site"
-                        Width="*" />
-                    <DataGridTextColumn
-                        Binding="{Binding Label}"
-                        Header="Label"
-                        Width="*" />
-                    <DataGridTextColumn
-                        Binding="{Binding Username}"
-                        Header="Username"
-                        Width="*" />
-                    <DataGridTemplateColumn
-                        Header="Password"
-                        Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel>
-                                    <Button
-                                        Content="Show Passwd"
-                                        Command="{Binding DataContext.ShowPasswdAction, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding}" />
-                                    <Button
-                                        Content="Copy Passwd"
-                                        Command="{Binding DataContext.CopyPasswdAction, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                        CommandParameter="{Binding}" />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+            <Grid
+                Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0.15*" />
+                    <RowDefinition Height="0.85*" />
+                </Grid.RowDefinitions>
+                <StackPanel
+                    Grid.Row="0"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Label
+                        Content="Search Account Info: "
+                        Margin="0,0,20,0"
+                        Foreground="White" />
+                    <TextBox
+                        Text="{Binding AccountInfoFilter, UpdateSourceTrigger=PropertyChanged}"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Width="150" />
+                    <ComboBox
+                        SelectedItem="{Binding CurrentAccountMetadataSelected}"
+                        ItemsSource="{Binding AccountMetadataCollection}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top" />
+                </StackPanel>
+                <DataGrid
+                    Grid.Row="1"
+                    Margin="10"
+                    CanUserAddRows="False"
+                    AutoGenerateColumns="False"
+                    ItemsSource="{Binding AccountCollection}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding Site}"
+                            Header="Site"
+                            Width="*" />
+                        <DataGridTextColumn
+                            Binding="{Binding Label}"
+                            Header="Label"
+                            Width="*" />
+                        <DataGridTextColumn
+                            Binding="{Binding Username}"
+                            Header="Username"
+                            Width="*" />
+                        <DataGridTemplateColumn
+                            Header="Password"
+                            Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <Button
+                                            Content="Show Passwd"
+                                            Command="{Binding DataContext.ShowPasswdAction, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}" />
+                                        <Button
+                                            Content="Copy Passwd"
+                                            Command="{Binding DataContext.CopyPasswdAction, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
