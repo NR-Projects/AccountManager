@@ -11,8 +11,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,7 +29,7 @@ public class UserDevice {
 
     private String currentToken;
 
-    private HashMap<String, String> metadata;
+    private Map<String, String> metadata;
 
     @Indexed(unique = true)
     private String secretKey;
