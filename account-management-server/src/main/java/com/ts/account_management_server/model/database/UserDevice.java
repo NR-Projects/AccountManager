@@ -37,6 +37,6 @@ public class UserDevice {
     private int allowedTokenRequestCount;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.toString()));
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 }
