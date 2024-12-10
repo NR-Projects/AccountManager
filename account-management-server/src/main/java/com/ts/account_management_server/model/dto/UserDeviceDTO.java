@@ -6,8 +6,9 @@ import lombok.Data;
 
 import java.util.Map;
 
-@Builder
+
 @Data
+@Builder
 public class UserDeviceDTO {
     private String id;
     private String label;

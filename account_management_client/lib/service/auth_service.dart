@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:account_management_client/constant/app_constants.dart';
+import 'package:account_management_client/model/entity/user_device.dart';
 import 'package:account_management_client/service/base_service.dart';
 import 'package:account_management_client/service/device_service.dart';
 import 'package:account_management_client/storage/storage.dart';
@@ -29,7 +30,8 @@ class AuthService extends BaseService {
     final response = wrappedResponse.response;
 
     String token = response['jwtToken'];
-    AppGlobalStore().setToken(token);
+    UserDevice userDevice = UserDevice.fromJson(response['userDeviceDTO']);
+    AppGlobalStore().setToken(token, userDevice);
 
     return true;
   }

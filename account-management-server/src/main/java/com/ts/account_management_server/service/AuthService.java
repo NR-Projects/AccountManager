@@ -26,21 +26,10 @@ public class AuthService {
     private PasswordEncoder passwordEncoder;
 
     public String login(
-            String secretKey,
+            UserDevice userDevice,
             String masterPassword,
             Map<String, String> deviceMetadata
     ) {
-        // Find User by label
-        Optional<UserDevice> optUser = userDeviceRepository.findBySecretKey(secretKey);
-
-        if (optUser.isEmpty()) return null;
-        UserDevice userDevice = optUser.get();
-
-        // Check if same secretKey
-        boolean secretKeyFlag = userDevice
-                .getSecretKey()
-                .equals(secretKey);
-
         // Check if masterPassword is correct
         boolean masterPasswordFlag = passwordEncoder.matches(
                 masterPassword,
@@ -56,7 +45,7 @@ public class AuthService {
                 .equals(deviceMetadata);
 
         // Converge result into one flag
-        boolean loginFlag = secretKeyFlag && masterPasswordFlag && deviceMetadataFlag;
+        boolean loginFlag = masterPasswordFlag && deviceMetadataFlag;
         if (!loginFlag) return null;
 
         // Generate Jwt Token

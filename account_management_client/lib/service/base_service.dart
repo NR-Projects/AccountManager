@@ -15,12 +15,13 @@ abstract class BaseService {
   }
 
   Future<WrappedResponse> _wrappedHttpRequest(
-      Future<http.Response> Function() httpReqFunc) async {
+      Future<http.Response> Function(http.Client) httpReqFunc) async {
     WrappedResponse wrappedResponse = WrappedResponse();
     try {
-      final response = await httpReqFunc();
+      final client = http.Client();
+      final response = await httpReqFunc(client);
       wrappedResponse.hasErrorOccurred = response.statusCode >= 400;
-      wrappedResponse.response = response;
+      wrappedResponse.response = {};
       if (response.body.isNotEmpty) {
         wrappedResponse.response = jsonDecode(response.body);
       }
@@ -42,7 +43,7 @@ abstract class BaseService {
       Map<String, String>? headers,
       Object? body,
       Encoding? encoding}) async {
-    return _wrappedHttpRequest(() => http.post(
+    return _wrappedHttpRequest((client) async => await client.post(
           Uri.parse(url),
           headers: _constructHeaders(headers),
           body: body,
@@ -52,7 +53,7 @@ abstract class BaseService {
 
   Future<WrappedResponse> wrappedGetRequest(
       {required String url, Map<String, String>? headers}) async {
-    return _wrappedHttpRequest(() => http.get(
+    return _wrappedHttpRequest((client) async => await http.get(
           Uri.parse(url),
           headers: _constructHeaders(headers),
         ));
@@ -63,7 +64,7 @@ abstract class BaseService {
       Map<String, String>? headers,
       Object? body,
       Encoding? encoding}) async {
-    return _wrappedHttpRequest(() => http.put(Uri.parse(url),
+    return _wrappedHttpRequest((client) async => await http.put(Uri.parse(url),
         headers: _constructHeaders(headers), body: body, encoding: encoding));
   }
 
@@ -72,7 +73,7 @@ abstract class BaseService {
       Map<String, String>? headers,
       Object? body,
       Encoding? encoding}) async {
-    return _wrappedHttpRequest(() => http.delete(Uri.parse(url),
+    return _wrappedHttpRequest((client) async => await http.delete(Uri.parse(url),
         headers: _constructHeaders(headers), body: body, encoding: encoding));
   }
 }

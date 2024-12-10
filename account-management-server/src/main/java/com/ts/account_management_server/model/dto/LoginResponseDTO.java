@@ -1,5 +1,6 @@
 package com.ts.account_management_server.model.dto;
 
+import com.ts.account_management_server.model.database.UserDevice;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,5 +8,5 @@ import lombok.Data;
 @Builder
 public class LoginResponseDTO {
     private String jwtToken;
-    private String role;
+    private UserDeviceDTO userDeviceDTO;
 }

@@ -40,12 +40,6 @@ public class UserDeviceController {
                 .build();
     }
 
-    @GetMapping("")
-    public UserDeviceDTO getSelfInfo(Authentication authentication) {
-        UserDevice userDevice = (UserDevice) authentication.getPrincipal();
-        return UserDeviceMapper.toDTO(userDevice);
-    }
-
     @GetMapping("/all")
     public List<UserDeviceDTO> allUsers() {
         return userDeviceService

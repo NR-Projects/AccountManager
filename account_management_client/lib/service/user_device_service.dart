@@ -42,15 +42,6 @@ class UserDeviceService extends BaseService {
     return true;
   }
 
-  Future<UserDevice?> getSelfUser() async {
-    final wrappedResponse =
-        await wrappedGetRequest(url: AppConstants.Api.UserDevice.GET_SELF);
-
-    if (wrappedResponse.hasErrorOccurred) return null;
-
-    return UserDevice.fromJson(wrappedResponse.response);
-  }
-
   Future<List<UserDevice>> getAllUserDevices() async {
     final wrappedResponse = await wrappedGetRequest(
       url: AppConstants.Api.UserDevice.ALL_USERS,

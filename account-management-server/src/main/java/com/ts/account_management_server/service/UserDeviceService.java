@@ -62,6 +62,10 @@ public class UserDeviceService {
         return userDeviceRepository.findById(id).get();
     }
 
+    public Optional<UserDevice> getUserDeviceBySecretKey(String secretKey) {
+        return userDeviceRepository.findBySecretKey(secretKey);
+    }
+
     public List<UserDevice> getUsers() {
         return userDeviceRepository.findAll();
     }
