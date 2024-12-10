@@ -4,6 +4,7 @@ import com.ts.account_management_server.model.database.UserDevice;
 import com.ts.account_management_server.repository.ServerInfoRepository;
 import com.ts.account_management_server.repository.UserDeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -20,6 +21,9 @@ public class AuthService {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public String login(
             String secretKey,
@@ -38,11 +42,13 @@ public class AuthService {
                 .equals(secretKey);
 
         // Check if masterPassword is correct
-        boolean masterPasswordFlag = serverInfoRepository
-                .findTopByOrderById()
-                .get()
-                .getMasterPassword()
-                .equals(masterPassword);
+        boolean masterPasswordFlag = passwordEncoder.matches(
+                masterPassword,
+                serverInfoRepository
+                        .findTopByOrderById()
+                        .get()
+                        .getMasterPassword()
+        );
 
         // Check if same device
         boolean deviceMetadataFlag = userDevice

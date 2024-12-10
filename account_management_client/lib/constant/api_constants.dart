@@ -21,6 +21,7 @@ class _UserDevice {
   _UserDevice(this.baseUrl);
 
   String get REGISTER_USER_DEVICE => "$apiPrefix/register";
+  String get GET_SELF => apiPrefix;
   String get ALL_USERS => "$apiPrefix/all";
   String get UPDATE_USER => apiPrefix;
   String get DELETE_USER => apiPrefix;

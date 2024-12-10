@@ -5,7 +5,6 @@ import 'package:account_management_client/service/base_service.dart';
 import 'package:account_management_client/service/device_service.dart';
 import 'package:account_management_client/storage/storage.dart';
 import 'package:account_management_client/store/app_global_store.dart';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
 class AuthService extends BaseService {
   final DeviceService deviceService;
@@ -30,8 +29,7 @@ class AuthService extends BaseService {
     final response = wrappedResponse.response;
 
     String token = response['jwtToken'];
-    final jwt = JWT.decode(token);
-    AppGlobalStore().setToken(token, jwt.payload['role']);
+    AppGlobalStore().setToken(token);
 
     return true;
   }

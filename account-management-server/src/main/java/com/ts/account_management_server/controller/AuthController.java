@@ -28,6 +28,7 @@ public class AuthController {
                 loginRequestDTO.getDeviceMetadata()
         );
         if (jwtToken == null) throw AuthException.Authentication();
+
         // Generate token
         return LoginResponseDTO
                 .builder()

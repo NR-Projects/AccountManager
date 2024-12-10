@@ -29,15 +29,15 @@ public class SecurityConfig {
                                 // Public endpoints
                                 .requestMatchers("/auth/login")
                                     .permitAll()
-                                .requestMatchers("/user/register-device")
+                                .requestMatchers("/user-device/register")
                                     .permitAll()
 
                                 // Admin-only endpoints
-                                .requestMatchers("/user/all")
+                                .requestMatchers("/user-device/all")
                                     .hasAuthority(UserDeviceRole.ADMIN.name())
-                                .requestMatchers("/user")
+                                .requestMatchers("/user-device")
                                     .hasAuthority(UserDeviceRole.ADMIN.name())
-                                .requestMatchers("/user/{userId}")
+                                .requestMatchers("/user-device/{userId}")
                                     .hasAuthority(UserDeviceRole.ADMIN.name())
 
                                 // Guest or Admin endpoints

@@ -42,6 +42,15 @@ class UserDeviceService extends BaseService {
     return true;
   }
 
+  Future<UserDevice?> getSelfUser() async {
+    final wrappedResponse =
+        await wrappedGetRequest(url: AppConstants.Api.UserDevice.GET_SELF);
+
+    if (wrappedResponse.hasErrorOccurred) return null;
+
+    return UserDevice.fromJson(wrappedResponse.response);
+  }
+
   Future<List<UserDevice>> getAllUserDevices() async {
     final wrappedResponse = await wrappedGetRequest(
       url: AppConstants.Api.UserDevice.ALL_USERS,
@@ -57,7 +66,7 @@ class UserDeviceService extends BaseService {
   Future<bool> updateUserDevice(UserDevice userDevice) async {
     final wrappedResponse = await wrappedPutRequest(
       url: AppConstants.Api.UserDevice.UPDATE_USER,
-      headers: { "Content-Type": "application/json" },
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode(userDevice),
     );
 
@@ -66,7 +75,7 @@ class UserDeviceService extends BaseService {
 
   Future<bool> deleteUserDevice(String userId) async {
     final wrappedResponse = await wrappedDeleteRequest(
-      url: "${AppConstants.Api.UserDevice.DELETE_USER}/$userId" ,
+      url: "${AppConstants.Api.UserDevice.DELETE_USER}/$userId",
     );
 
     return !wrappedResponse.hasErrorOccurred;

@@ -53,7 +53,9 @@ public class UserDeviceService {
                 )
         );
 
-        return userDeviceRepository.save(savedUserDevice);
+        userDeviceRepository.save(savedUserDevice);
+
+        return savedUserDevice;
     }
 
     public UserDevice getUserDeviceById(String id) {
