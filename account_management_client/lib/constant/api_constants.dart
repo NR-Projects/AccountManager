@@ -6,7 +6,7 @@ class API_ {
   final String _baseUrl = const String.fromEnvironment('SERVER_ENDPOINT');
 
   // User endpoints and constants
-  late _User User = _User(_baseUrl);
+  late _UserDevice UserDevice = _UserDevice(_baseUrl);
   late _Auth Auth = _Auth(_baseUrl);
   late _ServerConfig ServerConfig = _ServerConfig(_baseUrl);
   late _Site Site = _Site(_baseUrl);
@@ -14,11 +14,11 @@ class API_ {
 
 }
 
-class _User {
+class _UserDevice {
   final String baseUrl;
   late String apiPrefix = "$baseUrl/user-device";
 
-  _User(this.baseUrl);
+  _UserDevice(this.baseUrl);
 
   String get REGISTER_USER_DEVICE => "$apiPrefix/register";
   String get ALL_USERS => "$apiPrefix/all";
