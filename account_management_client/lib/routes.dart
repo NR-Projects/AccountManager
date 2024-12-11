@@ -7,6 +7,7 @@ import 'package:account_management_client/page/sites_page.dart';
 import 'package:account_management_client/page/accounts_page.dart';
 import 'package:account_management_client/service/auth_service.dart';
 import 'package:account_management_client/service/server_info_service.dart';
+import 'package:account_management_client/service/site_service.dart';
 import 'package:account_management_client/service/user_device_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -34,7 +35,9 @@ class Routes {
         serverInfoService: GetIt.instance<ServerInfoService>(),
       ),
       settings: (context) => const SettingsPage(),
-      sites: (context) => const SitesPage(),
+      sites: (context) => SitesPage(
+        siteService: GetIt.instance<SiteService>(),
+      ),
       accounts: (context) => const AccountsPage(),
     };
   }

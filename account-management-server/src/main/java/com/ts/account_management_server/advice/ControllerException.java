@@ -12,7 +12,7 @@ public class ControllerException {
     public ResponseEntity<ErrorResponse> handleDefinedExceptions(
             BaseException ex
     ) {
-        System.out.println("Exception Received");
+        System.out.println(ex.getMessage());
         return ResponseEntity
                 .status(ex.getStatusCode())
                 .body(
@@ -27,7 +27,7 @@ public class ControllerException {
     public ResponseEntity<ErrorResponse> handleRemainingExceptions(
             Exception ex
     ) {
-        System.out.println("Exception Received");
+        System.out.println(ex.getMessage());
         return ResponseEntity
                 .status(500)
                 .body(
