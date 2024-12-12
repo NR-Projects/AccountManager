@@ -68,7 +68,7 @@ public class SecurityConfig {
                                     .hasAuthority(UserDeviceRole.ADMIN.name())
 
                                 .anyRequest()
-                                    .authenticated()
+                                    .permitAll()
                 )
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
