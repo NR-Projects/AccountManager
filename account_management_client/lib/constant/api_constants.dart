@@ -70,6 +70,7 @@ class _Account {
 
   String get CREATE_ACCOUNT => apiPrefix;
   String get GET_ALL_ACCOUNTS => "$apiPrefix/all";
+  String get GET_ACCOUNT => apiPrefix;
   String get GET_ACCOUNT_PASSWORD => "$apiPrefix/password";
   String get UPDATE_ACCOUNT => apiPrefix;
   String get DELETE_ACCOUNT => apiPrefix;

@@ -19,19 +19,7 @@ class Account {
 
     this.username,
     this.linkedAccountId,
-  });
-
-
-  Account.withPassword({
-    required this.id,
-    required this.accountType,
-    required this.siteName,
-    required this.label,
-    required this.notes,
-
-    this.username,
-    this.linkedAccountId,
-    this.password
+    this.password,
   });
 
   factory Account.initEmpty() {
@@ -47,6 +35,7 @@ class Account {
         notes:  json['notes'],
 
         username: json['username'],
+        password: json['password'],
         linkedAccountId: json['linkedAccountId'],
     );
   }

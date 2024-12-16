@@ -34,7 +34,7 @@ public class AccountController {
     private SiteService siteService;
 
     @PostMapping("")
-    public void createNewAccount(@RequestBody AccountRequestDTO accountRequestDTO) throws EntityException {
+    public void createNewAccount(@RequestBody AccountRequestDTO accountRequestDTO) throws Exception {
         Account account = accountFactory.getAccountFromDTO(accountRequestDTO);
         accountService.createAccount(account);
     }
@@ -60,8 +60,13 @@ public class AccountController {
                 .build();
     }
 
+    @GetMapping("/{accountId}")
+    public AccountResponseDTO getAccount(@PathVariable String accountId) throws Exception {
+        return AccountMapper.toDTOwithSensitiveInfo(accountService.getFullAccount(accountId));
+    }
+
     @GetMapping("/password/{accountId}")
-    public Map<String, String> getAccountPassword(@PathVariable String accountId) throws BaseException {
+    public Map<String, String> getAccountPassword(@PathVariable String accountId) throws Exception {
         Account account = accountFactory.getAccountFromId(accountId);
         return Map.of(
                 "accountPassword", accountService.getPassword(account)
@@ -69,7 +74,7 @@ public class AccountController {
     }
 
     @PutMapping("")
-    public void updateExistingAccount(@RequestBody AccountRequestDTO accountRequestDTO) throws BaseException {
+    public void updateExistingAccount(@RequestBody AccountRequestDTO accountRequestDTO) throws Exception {
         Account account = accountFactory.getAccountFromDTO(accountRequestDTO);
         accountService.updateAccount(account);
     }

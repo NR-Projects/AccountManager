@@ -38,6 +38,16 @@ class AccountService extends BaseService {
     );
   }
 
+  Future<Account> getAccount(String accountId) async {
+    final wrappedResponse = await wrappedGetRequest(
+      url: "${AppConstants.Api.Account.GET_ACCOUNT}/$accountId"
+    );
+
+    if (wrappedResponse.hasErrorOccurred) return Account.initEmpty();
+
+    return Account.fromJson(wrappedResponse.response);
+  }
+
   Future<String> getPassword(String accountId) async {
     final wrappedResponse = await wrappedGetRequest(
       url: "${AppConstants.Api.Account.GET_ACCOUNT_PASSWORD}/$accountId"

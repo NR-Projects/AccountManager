@@ -13,5 +13,6 @@ public class AccountResponseDTO {
     private String label;
     private String notes;
     private String username;
+    private String password;
     private String linkedAccountId;
 }

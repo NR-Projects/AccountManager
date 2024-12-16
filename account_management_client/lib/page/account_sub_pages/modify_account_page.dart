@@ -23,16 +23,32 @@ class ModifyAccountPage extends StatefulWidget {
 class _ModifyAccountPageState extends State<ModifyAccountPage> {
   bool isEdit = false;
   Account account = Account.initEmpty();
+  bool isLoading = true;
+  bool isPasswordVisisble = false;
 
   @override
   void initState() {
     super.initState();
 
-    // Determine if add or edit
     isEdit = widget.account != null;
 
-    // Create account from isEdit
-    account = isEdit ? widget.account! : account;
+    asyncInit();
+  }
+
+  Future<void> asyncInit() async {
+    if (isEdit) {
+      Account fetchedAccount =
+          await widget.accountService.getAccount(widget.account!.id);
+
+      setState(() {
+        account = fetchedAccount;
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   void _saveAccount(Account account) {
@@ -52,7 +68,9 @@ class _ModifyAccountPageState extends State<ModifyAccountPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          child: _buildAccountModifyDetailsView(account),
+          child: isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _buildAccountModifyDetailsView(account),
         ),
       ),
     );
@@ -105,9 +123,7 @@ class _ModifyAccountPageState extends State<ModifyAccountPage> {
 
         // Site Dropdown
         DropdownButtonFormField<String>(
-          value: account.siteName.isNotEmpty
-              ? account.siteName
-              : null, // Set to null if empty
+          value: account.siteName.isNotEmpty ? account.siteName : null,
           items: widget.currentSiteNames.map((site) {
             return DropdownMenuItem<String>(
               value: site,
@@ -128,8 +144,19 @@ class _ModifyAccountPageState extends State<ModifyAccountPage> {
             controller: TextEditingController(text: account.username),
           ),
           TextField(
-            decoration: const InputDecoration(labelText: 'Password'),
-            obscureText: true,
+            decoration: InputDecoration(
+                labelText: 'Password',
+                suffixIcon: IconButton(
+                  icon: Icon(isPasswordVisisble
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      isPasswordVisisble = !isPasswordVisisble;
+                    });
+                  },
+                )),
+            obscureText: !isPasswordVisisble,
             onChanged: (val) => account.password = val,
             controller: TextEditingController(text: account.password),
           ),
