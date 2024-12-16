@@ -27,6 +27,9 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         req -> req
+                                .requestMatchers("/server/ping")
+                                    .permitAll()
+
                                 // Public endpoints
                                 .requestMatchers("/auth/login")
                                     .permitAll()
