@@ -26,50 +26,50 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req -> req.anyRequest().permitAll()
-//                                // Public endpoints
-//                                .requestMatchers("/auth/login")
-//                                    .permitAll()
-//                                .requestMatchers("/user-device/register")
-//                                    .permitAll()
-//
-//                                // Admin-only endpoints
-//                                .requestMatchers("/user-device/all")
-//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-//                                .requestMatchers("/user-device")
-//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-//                                .requestMatchers("/user-device/{userId}")
-//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-//
-//                                // Guest or Admin endpoints
-//                                .requestMatchers("/site/**")
-//                                    .hasAnyAuthority(
-//                                        UserDeviceRole.GUEST.name(),
-//                                        UserDeviceRole.ADMIN.name()
-//                                )
-//                                .requestMatchers("/account/**")
-//                                    .hasAnyAuthority(
-//                                        UserDeviceRole.GUEST.name(),
-//                                        UserDeviceRole.ADMIN.name()
-//                                )
-//
-//                                // Server config endpoints (specific to Admin)
-//                                .requestMatchers("/server-config/disable-guest-requests")
-//                                    .hasAnyAuthority(
-//                                        UserDeviceRole.GUEST.name(),
-//                                        UserDeviceRole.ADMIN.name()
-//                                )
-//                                .requestMatchers("/server-config/enable-guest-requests")
-//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-//                                .requestMatchers("/server-config")
-//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-//                                .requestMatchers("/server-config/change-master-password")
-//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-//                                .requestMatchers("/server-config/clear-data")
-//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-//
-//                                .anyRequest()
-//                                    .authenticated()
+                        req -> req
+                                // Public endpoints
+                                .requestMatchers("/auth/login")
+                                    .permitAll()
+                                .requestMatchers("/user-device/register")
+                                    .permitAll()
+
+                                // Admin-only endpoints
+                                .requestMatchers("/user-device/all")
+                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+                                .requestMatchers("/user-device")
+                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+                                .requestMatchers("/user-device/{userId}")
+                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+
+                                // Guest or Admin endpoints
+                                .requestMatchers("/site/**")
+                                    .hasAnyAuthority(
+                                        UserDeviceRole.GUEST.name(),
+                                        UserDeviceRole.ADMIN.name()
+                                )
+                                .requestMatchers("/account/**")
+                                    .hasAnyAuthority(
+                                        UserDeviceRole.GUEST.name(),
+                                        UserDeviceRole.ADMIN.name()
+                                )
+
+                                // Server config endpoints (specific to Admin)
+                                .requestMatchers("/server-config/disable-guest-requests")
+                                    .hasAnyAuthority(
+                                        UserDeviceRole.GUEST.name(),
+                                        UserDeviceRole.ADMIN.name()
+                                )
+                                .requestMatchers("/server-config/enable-guest-requests")
+                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+                                .requestMatchers("/server-config")
+                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+                                .requestMatchers("/server-config/change-master-password")
+                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+                                .requestMatchers("/server-config/clear-data")
+                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+
+                                .anyRequest()
+                                    .authenticated()
                 )
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
