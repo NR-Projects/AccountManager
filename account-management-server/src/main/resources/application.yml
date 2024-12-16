@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: account-management-server
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: account-management
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+  output:
+    ansi:
+      enabled: ALWAYS
+
+server:
+  port: ${SERVER_PORT}
+
+application:
+  security:
+    jwt:
+      secret-key: ${JWT_SECRET_KEY}
+      expiration: ${JWT_EXPIRATION}
+    encryption:
+      secret: ${APPLICATION_ENCRYPTION_SECRET}
