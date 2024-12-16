@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Account-Management',
       theme: ThemeData.dark(),
-      initialRoute: Routes.accounts,
+      initialRoute: Routes.auth,
       routes: Routes.getRoutes(),
     );
   }  
