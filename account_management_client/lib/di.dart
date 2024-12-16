@@ -1,3 +1,4 @@
+import 'package:account_management_client/service/account_service.dart';
 import 'package:account_management_client/service/auth_service.dart';
 import 'package:account_management_client/service/device_service.dart';
 import 'package:account_management_client/service/server_info_service.dart';
@@ -21,4 +22,5 @@ void setupDependencies() {
   getIt.registerLazySingleton<UserDeviceService>(() => UserDeviceService(getIt<DeviceService>(), getIt<Storage>()));
   getIt.registerLazySingleton<ServerInfoService>(() => ServerInfoService());
   getIt.registerLazySingleton<SiteService>(() => SiteService());
+  getIt.registerLazySingleton<AccountService>(() => AccountService());
 }

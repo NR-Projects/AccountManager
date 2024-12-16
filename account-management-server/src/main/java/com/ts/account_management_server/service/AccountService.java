@@ -5,6 +5,8 @@ import com.ts.account_management_server.exception.BaseException;
 import com.ts.account_management_server.exception.EntityException;
 import com.ts.account_management_server.exception.LinkException;
 import com.ts.account_management_server.model.database.Account;
+import com.ts.account_management_server.model.database.account_impl.LinkedAccount;
+import com.ts.account_management_server.model.database.account_impl.PasswordOnlyAccount;
 import com.ts.account_management_server.model.database.account_impl.UsernamePasswordAccount;
 import com.ts.account_management_server.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     public void createAccount(Account account) {
+        account.setId(null);
         accountRepository.save(account);
     }
 
@@ -35,8 +38,12 @@ public class AccountService {
                 UsernamePasswordAccount usernamePasswordAccount = (UsernamePasswordAccount) account;
                 password = usernamePasswordAccount.getPassword();
             }
-            case LINKED -> {
-
+            case PASSWORD_ONLY -> {
+                PasswordOnlyAccount passwordOnlyAccount = (PasswordOnlyAccount) account;
+                password = passwordOnlyAccount.getPassword();
+            }
+            default -> {
+                password = "";
             }
         }
 

@@ -7,13 +7,18 @@ import com.ts.account_management_server.exception.LinkException;
 import com.ts.account_management_server.factory.AccountFactory;
 import com.ts.account_management_server.mapper.AccountMapper;
 import com.ts.account_management_server.model.database.Account;
+import com.ts.account_management_server.model.database.Site;
 import com.ts.account_management_server.model.dto.AccountRequestDTO;
 import com.ts.account_management_server.model.dto.AccountResponseDTO;
+import com.ts.account_management_server.model.dto.AccountsAndSitesDTO;
 import com.ts.account_management_server.service.AccountService;
+import com.ts.account_management_server.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/account")
@@ -25,6 +30,9 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private SiteService siteService;
+
     @PostMapping("")
     public void createNewAccount(@RequestBody AccountRequestDTO accountRequestDTO) throws EntityException {
         Account account = accountFactory.getAccountFromDTO(accountRequestDTO);
@@ -32,18 +40,32 @@ public class AccountController {
     }
 
     @GetMapping("/all")
-    public List<AccountResponseDTO> getAllAccounts() {
-        return accountService
-                .getAccounts()
-                .stream()
-                .map(AccountMapper::toDTO)
-                .toList();
+    public AccountsAndSitesDTO getAllAccounts() {
+        return AccountsAndSitesDTO
+                .builder()
+                .accountResponseDTOList(
+                        accountService
+                                .getAccounts()
+                                .stream()
+                                .map(AccountMapper::toDTO)
+                                .toList()
+                )
+                .siteNameList(
+                        siteService
+                                .getAllSites()
+                                .stream()
+                                .map(Site::getName)
+                                .toList()
+                )
+                .build();
     }
 
     @GetMapping("/password/{accountId}")
-    public String getAccountPassword(@PathVariable String accountId) throws BaseException {
+    public Map<String, String> getAccountPassword(@PathVariable String accountId) throws BaseException {
         Account account = accountFactory.getAccountFromId(accountId);
-        return accountService.getPassword(account);
+        return Map.of(
+                "accountPassword", accountService.getPassword(account)
+        );
     }
 
     @PutMapping("")
@@ -52,7 +74,7 @@ public class AccountController {
         accountService.updateAccount(account);
     }
 
-    @DeleteMapping("/account/{accountId}")
+    @DeleteMapping("/{accountId}")
     public void deleteExistingAccount(@PathVariable String accountId) throws BaseException {
         accountService.deleteAccount(accountId);
     }

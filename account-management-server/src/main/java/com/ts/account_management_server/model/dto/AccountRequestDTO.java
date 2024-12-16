@@ -6,6 +6,7 @@ import lombok.Data;
 public class AccountRequestDTO {
     private String id;
     private String accountType;
+    private String siteName;
     private String label;
     private String notes;
     private String username;

@@ -10,7 +10,9 @@ public class AccountMapper {
         AccountResponseDTO accountResponseDTO = new AccountResponseDTO();
         accountResponseDTO.setId(account.getId());
         accountResponseDTO.setLabel(account.getLabel());
+        accountResponseDTO.setAccountType(account.getType().name());
         accountResponseDTO.setNotes(account.getNotes());
+        accountResponseDTO.setSiteName(account.getSite().getName());
 
         mapAccountSpecificFields(account, accountResponseDTO);
 

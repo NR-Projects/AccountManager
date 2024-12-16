@@ -5,6 +5,7 @@ import 'package:account_management_client/page/register_page.dart';
 import 'package:account_management_client/page/settings_page.dart';
 import 'package:account_management_client/page/sites_page.dart';
 import 'package:account_management_client/page/accounts_page.dart';
+import 'package:account_management_client/service/account_service.dart';
 import 'package:account_management_client/service/auth_service.dart';
 import 'package:account_management_client/service/server_info_service.dart';
 import 'package:account_management_client/service/site_service.dart';
@@ -38,7 +39,9 @@ class Routes {
       sites: (context) => SitesPage(
         siteService: GetIt.instance<SiteService>(),
       ),
-      accounts: (context) => const AccountsPage(),
+      accounts: (context) => AccountsPage(
+        accountService: GetIt.instance<AccountService>()
+      ),
     };
   }
 }

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,50 +26,50 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        req -> req
-                                // Public endpoints
-                                .requestMatchers("/auth/login")
-                                    .permitAll()
-                                .requestMatchers("/user-device/register")
-                                    .permitAll()
-
-                                // Admin-only endpoints
-                                .requestMatchers("/user-device/all")
-                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-                                .requestMatchers("/user-device")
-                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-                                .requestMatchers("/user-device/{userId}")
-                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-
-                                // Guest or Admin endpoints
-                                .requestMatchers("/site/**")
-                                    .hasAnyAuthority(
-                                        UserDeviceRole.GUEST.name(),
-                                        UserDeviceRole.ADMIN.name()
-                                )
-                                .requestMatchers("/account/**")
-                                    .hasAnyAuthority(
-                                        UserDeviceRole.GUEST.name(),
-                                        UserDeviceRole.ADMIN.name()
-                                )
-
-                                // Server config endpoints (specific to Admin)
-                                .requestMatchers("/server-config/disable-guest-requests")
-                                    .hasAnyAuthority(
-                                        UserDeviceRole.GUEST.name(),
-                                        UserDeviceRole.ADMIN.name()
-                                )
-                                .requestMatchers("/server-config/enable-guest-requests")
-                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-                                .requestMatchers("/server-config")
-                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-                                .requestMatchers("/server-config/change-master-password")
-                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-                                .requestMatchers("/server-config/clear-data")
-                                    .hasAuthority(UserDeviceRole.ADMIN.name())
-
-                                .anyRequest()
-                                    .permitAll()
+                        req -> req.anyRequest().permitAll()
+//                                // Public endpoints
+//                                .requestMatchers("/auth/login")
+//                                    .permitAll()
+//                                .requestMatchers("/user-device/register")
+//                                    .permitAll()
+//
+//                                // Admin-only endpoints
+//                                .requestMatchers("/user-device/all")
+//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+//                                .requestMatchers("/user-device")
+//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+//                                .requestMatchers("/user-device/{userId}")
+//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+//
+//                                // Guest or Admin endpoints
+//                                .requestMatchers("/site/**")
+//                                    .hasAnyAuthority(
+//                                        UserDeviceRole.GUEST.name(),
+//                                        UserDeviceRole.ADMIN.name()
+//                                )
+//                                .requestMatchers("/account/**")
+//                                    .hasAnyAuthority(
+//                                        UserDeviceRole.GUEST.name(),
+//                                        UserDeviceRole.ADMIN.name()
+//                                )
+//
+//                                // Server config endpoints (specific to Admin)
+//                                .requestMatchers("/server-config/disable-guest-requests")
+//                                    .hasAnyAuthority(
+//                                        UserDeviceRole.GUEST.name(),
+//                                        UserDeviceRole.ADMIN.name()
+//                                )
+//                                .requestMatchers("/server-config/enable-guest-requests")
+//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+//                                .requestMatchers("/server-config")
+//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+//                                .requestMatchers("/server-config/change-master-password")
+//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+//                                .requestMatchers("/server-config/clear-data")
+//                                    .hasAuthority(UserDeviceRole.ADMIN.name())
+//
+//                                .anyRequest()
+//                                    .authenticated()
                 )
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -81,4 +82,12 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> {
+            throw new UnsupportedOperationException("No UserDetailsService in use. JWT handles authentication.");
+        };
+    }
+
 }

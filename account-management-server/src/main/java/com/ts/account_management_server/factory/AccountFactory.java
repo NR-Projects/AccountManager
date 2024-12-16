@@ -2,12 +2,14 @@ package com.ts.account_management_server.factory;
 
 import com.ts.account_management_server.exception.EntityException;
 import com.ts.account_management_server.model.database.Account;
+import com.ts.account_management_server.model.database.Site;
 import com.ts.account_management_server.model.database.account_impl.LinkedAccount;
 import com.ts.account_management_server.model.database.account_impl.PasswordOnlyAccount;
 import com.ts.account_management_server.model.database.account_impl.UsernamePasswordAccount;
 import com.ts.account_management_server.model.dto.AccountRequestDTO;
 import com.ts.account_management_server.model.enums.AccountType;
 import com.ts.account_management_server.repository.AccountRepository;
+import com.ts.account_management_server.repository.SiteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,9 @@ public class AccountFactory {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private SiteRepository siteRepository;
 
     public Account getAccountFromDTO(AccountRequestDTO accountRequestDTO) throws EntityException {
         AccountType accountType = AccountType.valueOf(accountRequestDTO.getAccountType());
@@ -39,6 +44,8 @@ public class AccountFactory {
         account.setLabel(accountRequestDTO.getLabel());
         account.setNotes(accountRequestDTO.getNotes());
 
+        account.setSite(getSite(accountRequestDTO.getSiteName()));
+
         return account;
     }
 
@@ -46,6 +53,12 @@ public class AccountFactory {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if (optionalAccount.isEmpty()) throw EntityException.NotFound("Account does not exists");
         return optionalAccount.get();
+    }
+
+    private Site getSite(String siteName) throws EntityException {
+        Optional<Site> optionalSite = siteRepository.getSiteByName(siteName);
+        if (optionalSite.isEmpty()) throw EntityException.NotFound("Site not found!");
+        return optionalSite.get();
     }
 
     private Account constructUsernamePassword(String username, String password) {
