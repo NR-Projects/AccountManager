@@ -12,7 +12,7 @@ public class InitializeServer implements CommandLineRunner {
     private ServerInfoService serverInfoService;
 
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws Exception {
         serverInfoService.initializeServer();
     }
 }
