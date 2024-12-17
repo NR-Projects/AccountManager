@@ -41,8 +41,6 @@ class HomePage extends StatelessWidget {
           _buildResponsiveButton(context, 'Manage Accounts', Routes.accounts),
           const SizedBox(height: 16),
           _buildResponsiveButton(context, 'Manage Sites', Routes.sites),
-          const SizedBox(height: 16),
-          _buildResponsiveButton(context, 'Settings', Routes.settings),
           if (isAdmin) ...[
             const SizedBox(height: 16),
             _buildResponsiveButton(context, 'Admin Page', Routes.admin),
