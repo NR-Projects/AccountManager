@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
@@ -22,6 +25,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        String[] typicalAuthorities = new String[] {
+                UserDeviceRole.GUEST.name(),
+                UserDeviceRole.USER_DEVICE.name(),
+                UserDeviceRole.ADMIN.name()
+        };
+
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
@@ -46,22 +56,13 @@ public class SecurityConfig {
 
                                 // Guest or Admin endpoints
                                 .requestMatchers("/site/**")
-                                    .hasAnyAuthority(
-                                        UserDeviceRole.GUEST.name(),
-                                        UserDeviceRole.ADMIN.name()
-                                )
+                                    .hasAnyAuthority(typicalAuthorities)
                                 .requestMatchers("/account/**")
-                                    .hasAnyAuthority(
-                                        UserDeviceRole.GUEST.name(),
-                                        UserDeviceRole.ADMIN.name()
-                                )
+                                    .hasAnyAuthority(typicalAuthorities)
 
                                 // Server config endpoints (specific to Admin)
                                 .requestMatchers("/server-config/disable-guest-requests")
-                                    .hasAnyAuthority(
-                                        UserDeviceRole.GUEST.name(),
-                                        UserDeviceRole.ADMIN.name()
-                                )
+                                    .hasAnyAuthority(typicalAuthorities)
                                 .requestMatchers("/server-config/enable-guest-requests")
                                     .hasAuthority(UserDeviceRole.ADMIN.name())
                                 .requestMatchers("/server-config")
