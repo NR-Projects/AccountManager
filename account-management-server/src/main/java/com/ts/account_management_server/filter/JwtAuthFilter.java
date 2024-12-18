@@ -1,6 +1,7 @@
 package com.ts.account_management_server.filter;
 
 import com.ts.account_management_server.model.database.UserDevice;
+import com.ts.account_management_server.model.enums.UserDeviceRole;
 import com.ts.account_management_server.service.JwtService;
 import com.ts.account_management_server.service.UserDeviceService;
 import jakarta.servlet.FilterChain;
@@ -67,6 +68,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         // Check if token is valid and allowed
         if (!jwtTokenString.equals(userDevice.getCurrentToken())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // Check if role is not PENDING
+        if (userDevice.getRole().equals(UserDeviceRole.PENDING)) {
             filterChain.doFilter(request, response);
             return;
         }
