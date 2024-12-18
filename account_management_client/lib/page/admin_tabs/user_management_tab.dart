@@ -108,7 +108,7 @@ class _UserManagementTabState extends State<UserManagementTab> {
               const SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 value: selectedRole,
-                items: ['PENDING', 'GUEST', 'ADMIN'].map((role) {
+                items: ['PENDING', 'GUEST', 'USER_DEVICE', 'ADMIN'].map((role) {
                   return DropdownMenuItem(value: role, child: Text(role));
                 }).toList(),
                 onChanged: (newRole) {
