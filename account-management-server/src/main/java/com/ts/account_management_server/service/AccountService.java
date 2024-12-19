@@ -1,14 +1,11 @@
 package com.ts.account_management_server.service;
 
-
 import com.ts.account_management_server.exception.BaseException;
 import com.ts.account_management_server.exception.EntityException;
 import com.ts.account_management_server.exception.LinkException;
+import com.ts.account_management_server.factory.AccountHandlerFactory;
+import com.ts.account_management_server.handler.AccountHandler;
 import com.ts.account_management_server.model.database.Account;
-import com.ts.account_management_server.model.database.account_impl.LinkedAccount;
-import com.ts.account_management_server.model.database.account_impl.PasswordOnlyAccount;
-import com.ts.account_management_server.model.database.account_impl.UsernamePasswordAccount;
-import com.ts.account_management_server.model.enums.AccountType;
 import com.ts.account_management_server.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +20,13 @@ public class AccountService {
     private AccountRepository accountRepository;
 
     @Autowired
-    private EncryptionService encryptionService;
+    private AccountHandlerFactory accountHandlerFactory;
 
     public void createAccount(Account account) throws Exception {
         account.setId(null);
-        Account encryptedAccount = encryptImportantDetails(account);
-        accountRepository.save(encryptedAccount);
+
+        AccountHandler accountHandler = accountHandlerFactory.getAccountHandlerFromAccountType(account.getType());
+        accountHandler.createAccount(account);
     }
 
     public List<Account> getAccounts() {
@@ -40,46 +38,18 @@ public class AccountService {
         if (optionalAccount.isEmpty()) throw EntityException.NotFound("Account not found!");
         Account account = optionalAccount.get();
 
-        return switch (account.getType()) {
-            case USERNAME_PASSWORD -> {
-                UsernamePasswordAccount usernamePasswordAccount = (UsernamePasswordAccount) account;
-                String decryptedPassword = encryptionService.decrypt(usernamePasswordAccount.getPassword());
-                usernamePasswordAccount.setPassword(decryptedPassword);
-                yield usernamePasswordAccount;
-            }
-            case PASSWORD_ONLY -> {
-                PasswordOnlyAccount passwordOnlyAccount = (PasswordOnlyAccount) account;
-                String decryptedPassword = encryptionService.decrypt(passwordOnlyAccount.getPassword());
-                passwordOnlyAccount.setPassword(decryptedPassword);
-                yield passwordOnlyAccount;
-            }
-            default -> account;
-        };
+        AccountHandler accountHandler = accountHandlerFactory.getAccountHandlerFromAccountType(account.getType());
+        return accountHandler.getFullAccount(account);
     }
 
     public String getPassword(Account account) throws Exception {
-        String password;
-
-        switch (account.getType()) {
-            case USERNAME_PASSWORD -> {
-                UsernamePasswordAccount usernamePasswordAccount = (UsernamePasswordAccount) account;
-                password = encryptionService.decrypt(usernamePasswordAccount.getPassword());
-            }
-            case PASSWORD_ONLY -> {
-                PasswordOnlyAccount passwordOnlyAccount = (PasswordOnlyAccount) account;
-                password = encryptionService.decrypt(passwordOnlyAccount.getPassword());
-            }
-            default -> {
-                password = "";
-            }
-        }
-
-        return password;
+        AccountHandler accountHandler = accountHandlerFactory.getAccountHandlerFromAccountType(account.getType());
+        return accountHandler.getPassword(account);
     }
 
     public void updateAccount(Account account) throws Exception {
-        Account encryptedAccount = encryptImportantDetails(account);
-        accountRepository.save(encryptedAccount);
+        AccountHandler accountHandler = accountHandlerFactory.getAccountHandlerFromAccountType(account.getType());
+        accountHandler.updateAccount(account);
     }
 
     public void deleteAccount(String accountId) throws BaseException {
@@ -90,25 +60,5 @@ public class AccountService {
             throw new LinkException("Account is linked to other accounts, remove links first before deleting!");
         }
         accountRepository.deleteById(accountId);
-    }
-
-    private Account encryptImportantDetails(Account account) throws Exception {
-        return switch (account.getType()) {
-            case USERNAME_PASSWORD -> {
-                UsernamePasswordAccount usernamePasswordAccount = (UsernamePasswordAccount) account;
-                usernamePasswordAccount.setPassword(
-                        encryptionService.encrypt(usernamePasswordAccount.getPassword())
-                );
-                yield usernamePasswordAccount;
-            }
-            case LINKED -> account;
-            case PASSWORD_ONLY -> {
-                PasswordOnlyAccount passwordOnlyAccount = (PasswordOnlyAccount) account;
-                passwordOnlyAccount.setPassword(
-                        encryptionService.encrypt(passwordOnlyAccount.getPassword())
-                );
-                yield passwordOnlyAccount;
-            }
-        };
     }
 }
